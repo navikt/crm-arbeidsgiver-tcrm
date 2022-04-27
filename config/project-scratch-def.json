@@ -1,9 +1,18 @@
 {
-    "orgName": "crm-shared-template",
+    "orgName": "crm-arbeidsgiver-tcrm",
     "edition": "Enterprise",
     "release": "Current",
     "adminEmail": "fakeemail@nav.no.scratchorg",
-    "features": ["ProcessBuilder", "API", "LiveAgent", "PersonAccounts", "ContactsToMultipleAccounts"],
+    "features": ["ProcessBuilder", 
+                "API", 
+                "LiveAgent", 
+                "PersonAccounts", 
+                "ContactsToMultipleAccounts",
+                "AnalyticsAdminPerms",
+                "DevelopmentWave", 
+                "AnalyticsAppEmbedded",
+                "EinsteinAnalyticsPlus",
+                "InsightsPlatform"],
     "country": "NO",
     "language": "en_US",
     "settings": {
@@ -24,6 +33,15 @@
         },
         "nameSettings": {
             "enableMiddleName": true
+        },
+        "analyticsSettings": {
+            "enableAnalyticsSharingEnable": true,
+            "autoInstallApps": true,
+            "canExploreDataConversationally": true,
+            "enableDashboardFlexiTable": true, 
+            "enableDataBlending": true,
+            "enableQueryLiveConnectors": true,
+            "enableWaveTemplate": true
         }
     }
 }
