@@ -39,9 +39,7 @@
             "autoInstallApps": true,
             "canExploreDataConversationally": true,
             "enableDashboardFlexiTable": true, 
-            "enableDataBlending": true,
-            "enableQueryLiveConnectors": true,
-            "enableWaveTemplate": true
+            "enableQueryLiveConnectors": true
         }
     }
 }
