@@ -3,37 +3,67 @@
     "edition": "Enterprise",
     "release": "Current",
     "adminEmail": "fakeemail@nav.no.scratchorg",
-    "features": ["ProcessBuilder", 
-                "API", 
-                "LiveAgent", 
-                "PersonAccounts", 
-                "ContactsToMultipleAccounts",
-                "AnalyticsAdminPerms",
-                "DevelopmentWave", 
-                "AnalyticsAppEmbedded",
-                "EinsteinAnalyticsPlus",
-                "InsightsPlatform"],
+    "features": ["Sites",
+        "ForceComPlatform",
+        "Communities",
+        "Knowledge",
+        "CustomerCommunity",
+        "CustomerCommunityPlus",
+        "PersonAccounts",
+        "ProcessBuilder",
+        "API",
+        "ServiceCloud",
+        "LiveAgent",
+        "LightningServiceConsole",
+        "ContactsToMultipleAccounts",
+        "FIELDSERVICE:1",
+        "AnalyticsAdminPerms",
+        "DevelopmentWave", 
+        "AnalyticsAppEmbedded",
+        "EinsteinAnalyticsPlus",
+        "InsightsPlatform"
+                ],
     "country": "NO",
     "language": "en_US",
     "settings": {
-        "lightningExperienceSettings": {
+        "communitiesSettings": {
+            "enableNetworksEnabled": true
+          },
+          "lightningExperienceSettings": {
             "enableS1DesktopEnabled": true
-        },
-        "languageSettings": {
-            "enableTranslationWorkbench": true
-        },
-        "accountSettings": {
-            "enableAccountTeams": true
-        },
-        "liveAgentSettings": {
+          },
+          "omniChannelSettings": {
+            "enableOmniChannel": true
+          },
+          "liveAgentSettings": {
             "enableLiveAgent": true
-        },
-        "emailAdministrationSettings": {
+          },
+          "languageSettings": {
+            "enableTranslationWorkbench": true
+          },
+          "accountSettings": {
+            "enableAccountHistoryTracking": true,
+            "enableAccountTeams": true
+          },
+          "emailAdministrationSettings": {
             "enableEnhancedEmailEnabled": true
-        },
-        "nameSettings": {
+          },
+          "nameSettings": {
             "enableMiddleName": true
-        },
+          },
+          "knowledgeSettings": {
+            "enableKnowledge": true,
+            "enableLightningKnowledge": true
+          },
+          "fieldServiceSettings": {
+            "fieldServiceOrgPref": true,
+            "doesShareSaParentWoWithAr": false,
+            "doesShareSaWithAr": false,
+            "enableWorkOrders": true,
+            "isGeoCodeSyncEnabled": false,
+            "isLocationHistoryEnabled": false,
+            "fieldServiceNotificationsOrgPref": true
+          },
         "analyticsSettings": {
             "enableAnalyticsSharingEnable": true,
             "autoInstallApps": true,
