@@ -20,6 +20,8 @@
         "Arbeidsgiver_contract",
         "Arbeidsgiver_opportunity",
         "Arbeidsgiver_temporaryLayoffs",
-        "CRM_LoginFlow"
+        "CRM_LoginFlow",
+        "EinsteinAnalyticsAdmin",
+        "EinsteinAnalyticsPlusAdmin"
     ]
 }

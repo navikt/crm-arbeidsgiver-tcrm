@@ -1,0 +1,3 @@
+KEY=$(cat .ssdx/.packageKey)
+KEYS="1:$KEY 2:$KEY 3:$KEY 4:$KEY 5:$KEY 6:$KEY 7:$KEY 8:$KEY 9:$KEY 10:$KEY 11:$KEY 12:$KEY 13:$KEY 14:$KEY 15:$KEY 16:$KEY 17:$KEY 18:$KEY 19:$KEY 20:$KEY"
+echo $KEYS

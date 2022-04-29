@@ -3,5 +3,5 @@
     <content xsi:nil="true"/>
     <application>WAVE_PUBLIC_DATAFLOWS</application>
     <dataflowType>User</dataflowType>
-    <masterLabel>Account</masterLabel>
+    <masterLabel>Arbeidsgiver data</masterLabel>
 </WaveDataflow>
