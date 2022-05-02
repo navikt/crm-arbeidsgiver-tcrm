@@ -1661,4 +1661,8 @@
         <object>NavUnit__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <recordTypeVisibilities>
+        <recordType>Event.ArbeidsgiverEvent</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
 </PermissionSet>
