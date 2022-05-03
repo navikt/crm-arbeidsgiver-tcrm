@@ -4,7 +4,7 @@
     <masterLabel>Markedsavdelingen v1</masterLabel>
     <shares>
         <accessLevel>Manage</accessLevel>
-        <sharedTo>test-a29lxgbicmfs@example.com</sharedTo>
+        <sharedTo>brage.storkersen@nav.no.tcrm</sharedTo>
         <sharedToType>User</sharedToType>
     </shares>
 </WaveApplication>
