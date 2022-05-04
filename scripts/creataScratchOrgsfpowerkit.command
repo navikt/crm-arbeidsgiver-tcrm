@@ -48,7 +48,7 @@ fi
 
 ##########################################################################
 echo && echo "${C}Creating Scratch Org named '$REPLY' ${NC}..."
-sfdx force:org:create -f ./config/project-scratch-def.json --setalias $REPLY --durationdays 5 --setdefaultusername >/dev/null 2>&1
+sfdx force:org:create -f ./config/project-scratch-def.json --setalias $REPLY --durationdays 1 --setdefaultusername >/dev/null 2>&1
 
 ##########################################################################
 echo && echo "${C}Installing Managed Packages ${NC}..."
