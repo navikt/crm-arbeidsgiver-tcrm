@@ -33,8 +33,8 @@
         "fields" : [ ],
         "dataset" : {
           "type" : "analyticsDataset",
-          "label" : "Kontoer_dev",
-          "name" : "Kontoer_dev",
+          "label" : "Kontoer",
+          "name" : "Kontoer",
           "folderName" : "Markedsavdelingen_v1"
         }
       }
