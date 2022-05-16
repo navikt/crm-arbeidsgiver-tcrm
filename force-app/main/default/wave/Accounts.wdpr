@@ -33,8 +33,8 @@
         "fields" : [ ],
         "dataset" : {
           "type" : "analyticsDataset",
-          "label" : "Kontoer_dev",
-          "name" : "Kontoer_dev",
+          "label" : "Kontoer_marked",
+          "name" : "Kontoer_marked",
           "folderName" : "Markedsavdelingen_v1"
         }
       }
@@ -43,7 +43,8 @@
   "ui" : {
     "nodes" : {
       "LOAD_DATASET0" : {
-        "label" : "Account",
+        "label" : "Account_dev",
+        "description" : "",
         "type" : "LOAD_DATASET",
         "top" : 112,
         "left" : 112,

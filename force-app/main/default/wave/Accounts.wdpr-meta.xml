@@ -3,5 +3,5 @@
     <content xsi:nil="true"/>
     <dataflow>Accounts</dataflow>
     <format>R3</format>
-    <masterLabel>Accounts_dev</masterLabel>
+    <masterLabel>Accounts_marked</masterLabel>
 </WaveRecipe>
