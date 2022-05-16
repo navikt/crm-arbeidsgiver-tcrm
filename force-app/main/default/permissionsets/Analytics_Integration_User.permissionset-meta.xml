@@ -1789,8 +1789,4 @@
         <recordType>Event.ArbeidsgiverEvent</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ActivitiesAccess</name>
-    </userPermissions>
 </PermissionSet>
