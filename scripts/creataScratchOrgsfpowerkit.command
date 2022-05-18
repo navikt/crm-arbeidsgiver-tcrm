@@ -61,6 +61,7 @@ done
 echo && echo "${C}Installing Unlocked Packages ${NC}..."
 echo y | sfdx plugins:install sfpowerkit@2.0.1
 keys="" && for p in $(sfdx force:package:list --json | jq '.result | .[].Name' -r); do keys+=$p":navcrm "; done
+
 sfdx sfpowerkit:package:dependencies:install -u $REPLY -r -a -w 60 -k ${keys} --wait 20
 
 ###########################################################################
