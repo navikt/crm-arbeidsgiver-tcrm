@@ -28,7 +28,7 @@
     },
     "OUTPUT0" : {
       "action" : "save",
-      "sources" : [ "FILTER0" ],
+      "sources" : [ "FORMULA0" ],
       "parameters" : {
         "fields" : [ ],
         "dataset" : {
@@ -56,6 +56,7 @@
       "action" : "join",
       "sources" : [ "LOAD_DATASET1", "FILTER0" ],
       "schema" : {
+        "fields" : [ ],
         "slice" : {
           "mode" : "DROP",
           "ignoreMissingFields" : true,
@@ -77,9 +78,25 @@
         "dataset" : {
           "type" : "analyticsDataset",
           "label" : "Kontoer.og.ArenaAktiviteter",
-          "folderName" : "Markedsavdelingen_v1",
-          "name" : "Kontoer_og_ArenaAktiviteter"
+          "name" : "Kontoer_og_ArenaAktiviteter",
+          "folderName" : "Markedsavdelingen_v1"
         }
+      }
+    },
+    "FORMULA0" : {
+      "action" : "formula",
+      "sources" : [ "FILTER0" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Likelyhoodtoacceptcontact",
+          "label" : "Sannsynlighet for tiltak",
+          "formulaExpression" : "case \n\twhen datediff(now(), TAG_Last_completed_activity_date__c) < 180\n\tthen 0.70\n\twhen (datediff(now(), TAG_Last_completed_activity_date__c)) > 180 AND (datediff(now(), TAG_Last_completed_activity_date__c)) < 360\n    then 0.4 \n\telse\n\t0.1\nend",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : "0"
+        } ]
       }
     }
   },
@@ -106,8 +123,8 @@
         "label" : "Create \"Kontoer\"",
         "description" : "Creates the datasource: \"Kontoer\".",
         "type" : "OUTPUT",
-        "top" : 250.2,
-        "left" : 532
+        "top" : 112.6,
+        "left" : 532.2
       },
       "LOAD_DATASET1" : {
         "label" : "ArenaActivity__c",
@@ -122,22 +139,37 @@
         "label" : "Join-account&arenaact",
         "description" : "",
         "type" : "JOIN",
-        "top" : 250.2,
-        "left" : 392
+        "top" : 392.1,
+        "left" : 392.1
       },
       "OUTPUT1" : {
-        "label" : "Accounts.and.ArenaAct",
+        "label" : "Create-Accounts.and.ArenaAct",
         "description" : "",
         "type" : "OUTPUT",
-        "top" : 110.19999999999999,
+        "top" : 391.7,
         "left" : 532
+      },
+      "TRANSFORM0" : {
+        "label" : "add.scoring",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 392,
+        "graph" : {
+          "FORMULA0" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          }
+        },
+        "connectors" : [ ]
       }
     },
     "connectors" : [ {
       "source" : "LOAD_DATASET0",
       "target" : "FILTER0"
     }, {
-      "source" : "FILTER0",
+      "source" : "TRANSFORM0",
       "target" : "OUTPUT0"
     }, {
       "source" : "LOAD_DATASET1",
@@ -148,6 +180,9 @@
     }, {
       "source" : "JOIN0",
       "target" : "OUTPUT1"
+    }, {
+      "source" : "FILTER0",
+      "target" : "TRANSFORM0"
     } ],
     "hiddenColumns" : [ ]
   }
