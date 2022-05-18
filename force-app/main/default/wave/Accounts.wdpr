@@ -38,6 +38,49 @@
           "folderName" : "Markedsavdelingen_v1"
         }
       }
+    },
+    "LOAD_DATASET1" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "Account__c", "AktivitetStatuskode__c", "Aktivitetstype__c", "DateFrom__c", "DateTo__c", "NAV_Kontor__c", "NAVenhet__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "ArenaActivity__c",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "ArenaActivity__c"
+        }
+      }
+    },
+    "JOIN0" : {
+      "action" : "join",
+      "sources" : [ "LOAD_DATASET1", "FILTER0" ],
+      "schema" : {
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "RIGHT_OUTER",
+        "leftKeys" : [ "Account__c" ],
+        "rightQualifier" : "Account",
+        "rightKeys" : [ "Id" ]
+      }
+    },
+    "OUTPUT1" : {
+      "action" : "save",
+      "sources" : [ "JOIN0" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Kontoer.og.ArenaAktiviteter",
+          "folderName" : "Markedsavdelingen_v1",
+          "name" : "Kontoer_og_ArenaAktiviteter"
+        }
+      }
     }
   },
   "ui" : {
@@ -46,7 +89,7 @@
         "label" : "Account_dev",
         "description" : "",
         "type" : "LOAD_DATASET",
-        "top" : 112,
+        "top" : 250.3,
         "left" : 112,
         "parameters" : {
           "sampleSize" : 2000
@@ -56,15 +99,38 @@
         "label" : "Remove person accounts",
         "description" : "Removes all person accounts",
         "type" : "FILTER",
-        "top" : 112,
+        "top" : 250.3,
         "left" : 252
       },
       "OUTPUT0" : {
         "label" : "Create \"Kontoer\"",
         "description" : "Creates the datasource: \"Kontoer\".",
         "type" : "OUTPUT",
-        "top" : 112,
+        "top" : 250.2,
+        "left" : 532
+      },
+      "LOAD_DATASET1" : {
+        "label" : "ArenaActivity__c",
+        "type" : "LOAD_DATASET",
+        "top" : 390.3,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "JOIN0" : {
+        "label" : "Join-account&arenaact",
+        "description" : "",
+        "type" : "JOIN",
+        "top" : 250.2,
         "left" : 392
+      },
+      "OUTPUT1" : {
+        "label" : "Accounts.and.ArenaAct",
+        "description" : "",
+        "type" : "OUTPUT",
+        "top" : 110.19999999999999,
+        "left" : 532
       }
     },
     "connectors" : [ {
@@ -73,6 +139,15 @@
     }, {
       "source" : "FILTER0",
       "target" : "OUTPUT0"
+    }, {
+      "source" : "LOAD_DATASET1",
+      "target" : "JOIN0"
+    }, {
+      "source" : "FILTER0",
+      "target" : "JOIN0"
+    }, {
+      "source" : "JOIN0",
+      "target" : "OUTPUT1"
     } ],
     "hiddenColumns" : [ ]
   }
