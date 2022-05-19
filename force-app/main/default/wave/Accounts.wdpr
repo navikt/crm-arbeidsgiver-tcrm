@@ -28,7 +28,7 @@
     },
     "OUTPUT0" : {
       "action" : "save",
-      "sources" : [ "DROP_FIELDS0" ],
+      "sources" : [ "BUCKET0" ],
       "parameters" : {
         "fields" : [ ],
         "dataset" : {
@@ -214,6 +214,44 @@
           "fields" : [ "Id", "IsPersonAccount", "INT_IndustryCode__c", "TAG_Last_completed_activity_date__c", "Likelyhoodtoacceptcontact", "Industry.group", "industri.shortName", "Name", "LastName", "FirstName", "Type", "ShippingStreet", "ShippingCity", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "Description", "OwnerId", "CreatedDate", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_Industry__c", "INT_MunicipalityNumber__c", "INT_OrganizationNumber__c", "INT_OrganizationalStructureDesc__c", "OrganizationNumberFormula__c", "NAV_Market_Region__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Main_Industry__c", "TAG_NavUnit__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "CRM_Region__pc", "CRM_Unit__pc" ]
         }
       }
+    },
+    "BUCKET0" : {
+      "action" : "bucket",
+      "sources" : [ "DROP_FIELDS0" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Likelyhoodtoacceptcontact_bucket",
+          "label" : "Sannsynlighet for tiltak gruppert",
+          "type" : "TEXT",
+          "bucketsSetup" : {
+            "defaultBucketValue" : null,
+            "nullBucketValue" : null,
+            "isPassthroughEnabled" : false,
+            "algorithm" : null,
+            "sourceField" : {
+              "name" : "Likelyhoodtoacceptcontact",
+              "type" : "NUMBER"
+            },
+            "buckets" : [ {
+              "value" : "Low",
+              "rangeStart" : null,
+              "rangeEnd" : 0.3
+            }, {
+              "value" : "Medium",
+              "rangeStart" : 0.3,
+              "rangeEnd" : 0.5
+            }, {
+              "value" : "High",
+              "rangeStart" : 0.5,
+              "rangeEnd" : 0.7
+            }, {
+              "value" : "Hot",
+              "rangeStart" : 0.7,
+              "rangeEnd" : null
+            } ]
+          }
+        } ]
+      }
     }
   },
   "ui" : {
@@ -346,9 +384,13 @@
         "top" : 252,
         "left" : 672,
         "graph" : {
-          "DROP_FIELDS0" : null
+          "DROP_FIELDS0" : null,
+          "BUCKET0" : null
         },
-        "connectors" : [ ]
+        "connectors" : [ {
+          "source" : "DROP_FIELDS0",
+          "target" : "BUCKET0"
+        } ]
       }
     },
     "connectors" : [ {
