@@ -72,7 +72,7 @@
     },
     "OUTPUT1" : {
       "action" : "save",
-      "sources" : [ "JOIN0" ],
+      "sources" : [ "EDIT_ATTRIBUTES0" ],
       "parameters" : {
         "fields" : [ ],
         "dataset" : {
@@ -96,6 +96,35 @@
           "precision" : 10,
           "scale" : 3,
           "defaultValue" : "0"
+        } ]
+      }
+    },
+    "FORMULA1" : {
+      "action" : "formula",
+      "sources" : [ "JOIN0" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Account.INT_IndustryCode__c_formula",
+          "label" : "Industry Code Formula",
+          "formulaExpression" : "substr(\"Account.INT_IndustryCode__c\", 0, 2)",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES0" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA1" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Account.INT_IndustryCode__c_formula",
+          "newProperties" : {
+            "label" : "Industri.code.short",
+            "name" : "Account.INT_IndustryCode__c_formula",
+            "typeProperties" : null
+          }
         } ]
       }
     }
@@ -146,8 +175,8 @@
         "label" : "Create-Accounts.and.ArenaAct",
         "description" : "",
         "type" : "OUTPUT",
-        "top" : 391.7,
-        "left" : 532
+        "top" : 392,
+        "left" : 672
       },
       "TRANSFORM0" : {
         "label" : "add.scoring",
@@ -163,6 +192,25 @@
           }
         },
         "connectors" : [ ]
+      },
+      "TRANSFORM1" : {
+        "label" : "group.industry",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 392,
+        "left" : 532,
+        "graph" : {
+          "FORMULA1" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "EDIT_ATTRIBUTES0" : null
+        },
+        "connectors" : [ {
+          "source" : "FORMULA1",
+          "target" : "EDIT_ATTRIBUTES0"
+        } ]
       }
     },
     "connectors" : [ {
@@ -178,12 +226,215 @@
       "source" : "FILTER0",
       "target" : "JOIN0"
     }, {
-      "source" : "JOIN0",
+      "source" : "TRANSFORM1",
       "target" : "OUTPUT1"
     }, {
       "source" : "FILTER0",
       "target" : "TRANSFORM0"
+    }, {
+      "source" : "JOIN0",
+      "target" : "TRANSFORM1"
     } ],
-    "hiddenColumns" : [ ]
+    "hiddenColumns" : [ {
+      "fieldName" : "Name",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "LastName",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "FirstName",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "Type",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "ShippingStreet",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "ShippingCity",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "ShippingState",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "ShippingPostalCode",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "Industry",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "NumberOfEmployees",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "Description",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "OwnerId",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "CreatedDate",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "LastActivityDate",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "LastViewedDate",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "LastReferencedDate",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "AccountSource",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "SicDesc",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "CRM_AccountType__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "CRM_MainIndustry__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "CRM_RegistrationYear__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "INT_IndustryCode__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "INT_Industry__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "INT_MunicipalityNumber__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "INT_OrganizationNumber__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "INT_OrganizationalStructureDesc__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "INT_SectorCode__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "INT_Sector__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "OrganizationNumberFormula__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "NAV_Market_Region__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "NAV_Region__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "Shipping_State__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "TAG_Employer_Region__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "TAG_Main_Industry__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "TAG_NavUnit__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "TAG_Sector__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "INT_PotentialMandays__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "INT_RegDateEreg__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "INT_RegionNumber__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "CRM_Region__pc",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "CRM_Unit__pc",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "Source__pc",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "SourceFormula__pc",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Account"
+    }, {
+      "fieldName" : "Id",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$ArenaActivity__c"
+    }, {
+      "fieldName" : "AktivitetStatuskode__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$ArenaActivity__c"
+    }, {
+      "fieldName" : "Aktivitetstype__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$ArenaActivity__c"
+    }, {
+      "fieldName" : "DateFrom__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$ArenaActivity__c"
+    }, {
+      "fieldName" : "DateTo__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$ArenaActivity__c"
+    }, {
+      "fieldName" : "NAV_Kontor__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$ArenaActivity__c"
+    }, {
+      "fieldName" : "NAVenhet__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$ArenaActivity__c"
+    } ]
   }
 }
