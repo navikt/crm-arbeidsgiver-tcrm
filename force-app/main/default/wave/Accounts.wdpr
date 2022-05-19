@@ -28,7 +28,7 @@
     },
     "OUTPUT0" : {
       "action" : "save",
-      "sources" : [ "FORMULA0" ],
+      "sources" : [ "UPDATE1" ],
       "parameters" : {
         "fields" : [ ],
         "dataset" : {
@@ -72,7 +72,7 @@
     },
     "OUTPUT1" : {
       "action" : "save",
-      "sources" : [ "EDIT_ATTRIBUTES0" ],
+      "sources" : [ "EDIT_ATTRIBUTES1" ],
       "parameters" : {
         "fields" : [ ],
         "dataset" : {
@@ -99,6 +99,21 @@
         } ]
       }
     },
+    "FORMULA2" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA0" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Industry.group",
+          "label" : "Industri gruppe",
+          "formulaExpression" : "substr(INT_IndustryCode__c, 0, 2)",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
     "FORMULA1" : {
       "action" : "formula",
       "sources" : [ "JOIN0" ],
@@ -122,10 +137,56 @@
           "name" : "Account.INT_IndustryCode__c_formula",
           "newProperties" : {
             "label" : "Industri.code.short",
-            "name" : "Account.INT_IndustryCode__c_formula",
-            "typeProperties" : null
+            "name" : "Account.INT_IndustryCode__c_formula"
           }
         } ]
+      }
+    },
+    "UPDATE0" : {
+      "action" : "update",
+      "sources" : [ "EDIT_ATTRIBUTES0", "LOAD_DATASET3" ],
+      "parameters" : {
+        "leftKeys" : [ "Account.INT_IndustryCode__c_formula" ],
+        "rightKeys" : [ "code" ],
+        "updateColumns" : {
+          "Account.INT_IndustryCode__c_formula" : "shortName"
+        }
+      }
+    },
+    "LOAD_DATASET3" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "code", "parentCode", "shortName" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "industri_grupper",
+          "name" : "industri_grupper"
+        }
+      }
+    },
+    "EDIT_ATTRIBUTES1" : {
+      "action" : "schema",
+      "sources" : [ "UPDATE0" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Account.INT_IndustryCode__c_formula",
+          "newProperties" : {
+            "label" : "Industri.group",
+            "name" : "Account.INT_IndustryCode__c_formula"
+          }
+        } ]
+      }
+    },
+    "UPDATE1" : {
+      "action" : "update",
+      "sources" : [ "FORMULA2", "LOAD_DATASET3" ],
+      "parameters" : {
+        "leftKeys" : [ "Industry.group" ],
+        "rightKeys" : [ "code" ],
+        "updateColumns" : {
+          "Industry.group" : "shortName"
+        }
       }
     }
   },
@@ -135,7 +196,7 @@
         "label" : "Account_dev",
         "description" : "",
         "type" : "LOAD_DATASET",
-        "top" : 250.3,
+        "top" : 112,
         "left" : 112,
         "parameters" : {
           "sampleSize" : 2000
@@ -145,21 +206,21 @@
         "label" : "Remove person accounts",
         "description" : "Removes all person accounts",
         "type" : "FILTER",
-        "top" : 250.3,
+        "top" : 112,
         "left" : 252
       },
       "OUTPUT0" : {
         "label" : "Create \"Kontoer\"",
         "description" : "Creates the datasource: \"Kontoer\".",
         "type" : "OUTPUT",
-        "top" : 112.6,
-        "left" : 532.2
+        "top" : 252,
+        "left" : 672
       },
       "LOAD_DATASET1" : {
         "label" : "ArenaActivity__c",
         "type" : "LOAD_DATASET",
-        "top" : 390.3,
-        "left" : 112,
+        "top" : 252,
+        "left" : 252,
         "parameters" : {
           "sampleSize" : 2000
         }
@@ -168,36 +229,44 @@
         "label" : "Join-account&arenaact",
         "description" : "",
         "type" : "JOIN",
-        "top" : 392.1,
-        "left" : 392.1
+        "top" : 112,
+        "left" : 392
       },
       "OUTPUT1" : {
         "label" : "Create-Accounts.and.ArenaAct",
         "description" : "",
         "type" : "OUTPUT",
-        "top" : 392,
-        "left" : 672
+        "top" : 112,
+        "left" : 952
       },
       "TRANSFORM0" : {
         "label" : "add.scoring",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 112,
+        "top" : 252,
         "left" : 392,
         "graph" : {
           "FORMULA0" : {
             "parameters" : {
               "type" : "BASE_FORMULA_UI"
             }
+          },
+          "FORMULA2" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
           }
         },
-        "connectors" : [ ]
+        "connectors" : [ {
+          "source" : "FORMULA0",
+          "target" : "FORMULA2"
+        } ]
       },
       "TRANSFORM1" : {
         "label" : "group.industry",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 392,
+        "top" : 112,
         "left" : 532,
         "graph" : {
           "FORMULA1" : {
@@ -211,13 +280,47 @@
           "source" : "FORMULA1",
           "target" : "EDIT_ATTRIBUTES0"
         } ]
+      },
+      "UPDATE0" : {
+        "label" : "add.industry.groupname",
+        "description" : "",
+        "type" : "UPDATE",
+        "top" : 112,
+        "left" : 672
+      },
+      "LOAD_DATASET3" : {
+        "label" : "industri_grupper",
+        "type" : "LOAD_DATASET",
+        "top" : 392,
+        "left" : 392,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM2" : {
+        "label" : "rename.collumn",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 812,
+        "graph" : {
+          "EDIT_ATTRIBUTES1" : null
+        },
+        "connectors" : [ ]
+      },
+      "UPDATE1" : {
+        "label" : "Add.indstry.groups",
+        "description" : "",
+        "type" : "UPDATE",
+        "top" : 252,
+        "left" : 532
       }
     },
     "connectors" : [ {
       "source" : "LOAD_DATASET0",
       "target" : "FILTER0"
     }, {
-      "source" : "TRANSFORM0",
+      "source" : "UPDATE1",
       "target" : "OUTPUT0"
     }, {
       "source" : "LOAD_DATASET1",
@@ -226,7 +329,7 @@
       "source" : "FILTER0",
       "target" : "JOIN0"
     }, {
-      "source" : "TRANSFORM1",
+      "source" : "TRANSFORM2",
       "target" : "OUTPUT1"
     }, {
       "source" : "FILTER0",
@@ -234,6 +337,21 @@
     }, {
       "source" : "JOIN0",
       "target" : "TRANSFORM1"
+    }, {
+      "source" : "TRANSFORM1",
+      "target" : "UPDATE0"
+    }, {
+      "source" : "LOAD_DATASET3",
+      "target" : "UPDATE0"
+    }, {
+      "source" : "UPDATE0",
+      "target" : "TRANSFORM2"
+    }, {
+      "source" : "TRANSFORM0",
+      "target" : "UPDATE1"
+    }, {
+      "source" : "LOAD_DATASET3",
+      "target" : "UPDATE1"
     } ],
     "hiddenColumns" : [ {
       "fieldName" : "Name",
