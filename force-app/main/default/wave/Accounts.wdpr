@@ -224,17 +224,13 @@
           "label" : "Sannsynlighet for tiltak gruppert",
           "type" : "TEXT",
           "bucketsSetup" : {
-            "defaultBucketValue" : null,
-            "nullBucketValue" : null,
             "isPassthroughEnabled" : false,
-            "algorithm" : null,
             "sourceField" : {
               "name" : "Likelyhoodtoacceptcontact",
               "type" : "NUMBER"
             },
             "buckets" : [ {
               "value" : "Low",
-              "rangeStart" : null,
               "rangeEnd" : 0.3
             }, {
               "value" : "Medium",
@@ -246,11 +242,54 @@
               "rangeEnd" : 0.7
             }, {
               "value" : "Hot",
-              "rangeStart" : 0.7,
-              "rangeEnd" : null
+              "rangeStart" : 0.7
             } ]
           }
         } ]
+      }
+    },
+    "EXTRACT0" : {
+      "action" : "extractGrains",
+      "sources" : [ "EDIT_ATTRIBUTES1" ],
+      "parameters" : {
+        "grainExtractions" : [ ]
+      }
+    },
+    "AGGREGATE1" : {
+      "action" : "aggregate",
+      "sources" : [ "EXTRACT0" ],
+      "parameters" : {
+        "aggregations" : [ {
+          "action" : "COUNT",
+          "name" : "activities.for.account",
+          "label" : "Antall aktiviteter"
+        } ],
+        "groupings" : [ "Account.Id" ],
+        "pivots" : [ ],
+        "pivot_v2" : {
+          "sourceFields" : [ "Aktivitetstype__c" ],
+          "valueCombinations" : [ [ "GJENN" ] ],
+          "pivotFieldsInfo" : {
+            "activities.for.account" : [ {
+              "name" : "activities.for.account_GJENN",
+              "label" : "Antall aktiviteter by GJENN"
+            } ]
+          }
+        },
+        "nodeType" : "STANDARD"
+      }
+    },
+    "OUTPUT2" : {
+      "action" : "save",
+      "sources" : [ "AGGREGATE1" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Aggregert antall aktiviteter",
+          "name" : "AgregetedArenaact",
+          "folderName" : "Markedsavdelingen_v1"
+        }
       }
     }
   },
@@ -391,6 +430,28 @@
           "source" : "DROP_FIELDS0",
           "target" : "BUCKET0"
         } ]
+      },
+      "AGGREGATE0" : {
+        "label" : "Aggregate.rows",
+        "description" : "",
+        "type" : "AGGREGATE",
+        "top" : 251.60000000000002,
+        "left" : 952,
+        "graph" : {
+          "EXTRACT0" : null,
+          "AGGREGATE1" : null
+        },
+        "connectors" : [ {
+          "source" : "EXTRACT0",
+          "target" : "AGGREGATE1"
+        } ]
+      },
+      "OUTPUT2" : {
+        "label" : "Create.AgregatedAreneact",
+        "description" : "",
+        "type" : "OUTPUT",
+        "top" : 252,
+        "left" : 1092
       }
     },
     "connectors" : [ {
@@ -432,6 +493,12 @@
     }, {
       "source" : "JOIN1",
       "target" : "TRANSFORM3"
+    }, {
+      "source" : "TRANSFORM2",
+      "target" : "AGGREGATE0"
+    }, {
+      "source" : "AGGREGATE0",
+      "target" : "OUTPUT2"
     } ],
     "hiddenColumns" : [ {
       "fieldName" : "AccountSource",
