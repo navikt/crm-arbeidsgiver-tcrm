@@ -3,5 +3,5 @@
     <content xsi:nil="true"/>
     <application>Markedsavdelingen_v1</application>
     <description>Dashboard for å identifisere muligherter i markedsregionene</description>
-    <masterLabel>Muligheter i markedet</masterLabel>
+    <masterLabel>Arbeidsgivere som ikke har vært i kontakt med</masterLabel>
 </WaveDashboard>
