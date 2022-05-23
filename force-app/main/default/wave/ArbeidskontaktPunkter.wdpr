@@ -1,32 +1,192 @@
 {
   "version" : "54.0",
   "nodes" : {
-    "LOAD_DATASET0" : {
+    "LOAD_DATASET1" : {
       "action" : "load",
       "sources" : [ ],
       "parameters" : {
-        "fields" : [ "Account.CRM_MainIndustry__c", "DateTo__c", "NAV_Kontor__c", "Account.LastReferencedDate", "Account.INT_IndustryCode__c_formula", "Account.CreatedDate", "Account.TAG_Main_Industry__c", "Account.TAG_Employer_Region__c", "industri.code", "NAVenhet__c", "Account.NAV_Region__c", "Account.Shipping_State__c", "Account__c", "Id", "Account.TAG_Last_completed_activity_date__c", "Account.LastActivityDate", "Account.ShippingState", "AktivitetStatuskode__c", "Account.CRM_Region__pc", "industri.shortName", "Account.NAV_Market_Region__c", "Account.TAG_NavUnit__c", "Aktivitetstype__c", "DateFrom__c", "Account.TAG_Sector__c", "Account.LastViewedDate", "Account.ShippingStreet" ],
+        "fields" : [ "Id", "RecordTypeId", "WhatId", "Subject", "ActivityDate", "Status", "Priority", "IsHighPriority", "Type", "AccountId", "IsClosed", "LastModifiedDate", "CompletedDateTime", "CRM_Region__c", "CRM_Unit__c", "Date__c", "RelatedToAccount__c", "TAG_ActivityType__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "Task",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "Task"
+        }
+      }
+    },
+    "LOAD_DATASET2" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "CRM_RegistrationYear__c", "CRM_Region__pc", "INT_OrganizationalStructureDesc__c", "LastReferencedDate", "TAG_NavUnit__c", "industri.shortName", "NAV_Region__c", "Name", "TAG_Main_Industry__c", "LastViewedDate", "TAG_Last_completed_activity_date__c", "Shipping_State__c", "TAG_Employer_Region__c", "Likelyhoodtoacceptcontact_bucket", "ShippingPostalCode", "LastActivityDate", "Id", "INT_RegDateEreg__c", "NumberOfEmployees", "INT_PotentialMandays__c", "Likelyhoodtoacceptcontact" ],
         "dataset" : {
           "type" : "analyticsDataset",
-          "label" : "Kontoer.og.ArenaAktiviteter",
-          "name" : "Kontoer_og_ArenaAktiviteter"
+          "label" : "Kontoer_marked",
+          "name" : "Kontoer_marked"
+        }
+      }
+    },
+    "JOIN1" : {
+      "action" : "join",
+      "sources" : [ "LOAD_DATASET2", "APPEND0" ],
+      "schema" : {
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "LEFT_OUTER",
+        "leftKeys" : [ "Id" ],
+        "rightQualifier" : "TaskEvent",
+        "rightKeys" : [ "RelatedToAccount__c" ]
+      }
+    },
+    "LOAD_DATASET3" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "WhoId", "WhatId", "Subject", "IsAllDayEvent", "StartDateTime", "EndDateTime", "AccountId", "Type", "LastModifiedDate", "CRM_Region__c", "CRM_Unit__c", "Date__c", "RelatedToAccount__c", "TAG_ActivityType__c", "TAG_Status__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "Event",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "Event"
+        }
+      }
+    },
+    "APPEND0" : {
+      "action" : "appendV2",
+      "sources" : [ "LOAD_DATASET1", "LOAD_DATASET3" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "Id",
+          "bottom" : "Id"
+        }, {
+          "top" : "WhatId",
+          "bottom" : "WhatId"
+        }, {
+          "top" : "Subject",
+          "bottom" : "Subject"
+        }, {
+          "top" : "Status",
+          "bottom" : "TAG_Status__c"
+        }, {
+          "top" : "Type",
+          "bottom" : "Type"
+        }, {
+          "top" : "CompletedDateTime",
+          "bottom" : "EndDateTime"
+        }, {
+          "top" : "CRM_Region__c",
+          "bottom" : "CRM_Region__c"
+        }, {
+          "top" : "CRM_Unit__c",
+          "bottom" : "CRM_Unit__c"
+        }, {
+          "top" : "Date__c",
+          "bottom" : "Date__c"
+        }, {
+          "top" : "RelatedToAccount__c",
+          "bottom" : "RelatedToAccount__c"
+        }, {
+          "top" : "AccountId",
+          "bottom" : "AccountId"
+        }, {
+          "top" : "LastModifiedDate",
+          "bottom" : "LastModifiedDate"
+        }, {
+          "top" : "TAG_ActivityType__c",
+          "bottom" : "TAG_ActivityType__c"
+        }, {
+          "bottom" : "TAG_Status__c"
+        }, {
+          "bottom" : "IsAllDayEvent"
+        } ]
+      }
+    },
+    "OUTPUT0" : {
+      "action" : "save",
+      "sources" : [ "JOIN1" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Kontoer.Oppgaver.Møter",
+          "name" : "AccountsTaskEvents",
+          "folderName" : "Markedsavdelingen_v1"
         }
       }
     }
   },
   "ui" : {
     "nodes" : {
-      "LOAD_DATASET0" : {
-        "label" : "Kontoer.og.ArenaAktiviteter",
+      "LOAD_DATASET1" : {
+        "label" : "Task",
         "type" : "LOAD_DATASET",
-        "top" : 112,
+        "top" : 252,
         "left" : 112,
         "parameters" : {
           "sampleSize" : 2000
         }
+      },
+      "LOAD_DATASET2" : {
+        "label" : "Kontoer_marked",
+        "type" : "LOAD_DATASET",
+        "top" : 392,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "JOIN1" : {
+        "label" : "Join.Task.and.Account",
+        "description" : "",
+        "type" : "JOIN",
+        "top" : 252.39999999999998,
+        "left" : 532.1
+      },
+      "LOAD_DATASET3" : {
+        "label" : "Event",
+        "type" : "LOAD_DATASET",
+        "top" : 112,
+        "left" : 112.5,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "APPEND0" : {
+        "label" : "Append.Taks.and.Event",
+        "description" : "",
+        "type" : "APPEND",
+        "top" : 252.60000000000002,
+        "left" : 252.10000000000002
+      },
+      "OUTPUT0" : {
+        "label" : "Create.Kontoer.Oppgaver.Møter",
+        "description" : "",
+        "type" : "OUTPUT",
+        "top" : 252,
+        "left" : 672
       }
     },
-    "connectors" : [ ],
+    "connectors" : [ {
+      "source" : "LOAD_DATASET2",
+      "target" : "JOIN1"
+    }, {
+      "source" : "APPEND0",
+      "target" : "JOIN1"
+    }, {
+      "source" : "LOAD_DATASET1",
+      "target" : "APPEND0"
+    }, {
+      "source" : "LOAD_DATASET3",
+      "target" : "APPEND0"
+    }, {
+      "source" : "JOIN1",
+      "target" : "OUTPUT0"
+    } ],
     "hiddenColumns" : [ ]
   }
 }
