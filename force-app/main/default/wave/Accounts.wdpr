@@ -5,7 +5,7 @@
       "action" : "load",
       "sources" : [ ],
       "parameters" : {
-        "fields" : [ "Id", "Name", "LastName", "FirstName", "Type", "ShippingStreet", "ShippingCity", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "Description", "OwnerId", "CreatedDate", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "IsPersonAccount", "AccountSource", "SicDesc", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_IndustryCode__c", "INT_Industry__c", "INT_MunicipalityNumber__c", "INT_OrganizationNumber__c", "INT_OrganizationalStructureDesc__c", "INT_SectorCode__c", "INT_Sector__c", "OrganizationNumberFormula__c", "NAV_Market_Region__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Last_completed_activity_date__c", "TAG_Main_Industry__c", "TAG_NavUnit__c", "TAG_Sector__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "CRM_Region__pc", "CRM_Unit__pc", "Source__pc", "SourceFormula__pc" ],
+        "fields" : [ "Id", "Name", "LastName", "FirstName", "Type", "ShippingStreet", "ShippingCity", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "Description", "OwnerId", "CreatedDate", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "IsPersonAccount", "AccountSource", "SicDesc", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_IndustryCode__c", "INT_Industry__c", "INT_MunicipalityNumber__c", "INT_OrganizationNumber__c", "INT_OrganizationalStructureDesc__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "INT_SectorCode__c", "INT_Sector__c", "OrganizationNumberFormula__c", "NAV_Market_Region__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Last_completed_activity_date__c", "TAG_Main_Industry__c", "TAG_Sector__c", "CRM_Region__pc", "CRM_Unit__pc", "Source__pc", "SourceFormula__pc", "MAR_NAVUnitText__c" ],
         "dataset" : {
           "type" : "connectedDataset",
           "label" : "Account",
@@ -207,11 +207,10 @@
       "action" : "schema",
       "sources" : [ "JOIN1" ],
       "parameters" : {
-        "fields" : [ ],
         "slice" : {
           "mode" : "SELECT",
           "ignoreMissingFields" : true,
-          "fields" : [ "Id", "IsPersonAccount", "INT_IndustryCode__c", "TAG_Last_completed_activity_date__c", "Likelyhoodtoacceptcontact", "Industry.group", "industri.shortName", "Name", "LastName", "FirstName", "Type", "ShippingStreet", "ShippingCity", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "Description", "OwnerId", "CreatedDate", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_Industry__c", "INT_MunicipalityNumber__c", "INT_OrganizationNumber__c", "INT_OrganizationalStructureDesc__c", "OrganizationNumberFormula__c", "NAV_Market_Region__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Main_Industry__c", "TAG_NavUnit__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "CRM_Region__pc", "CRM_Unit__pc" ]
+          "fields" : [ "Id", "IsPersonAccount", "INT_IndustryCode__c", "TAG_Last_completed_activity_date__c", "Likelyhoodtoacceptcontact", "Industry.group", "industri.shortName", "Name", "LastName", "FirstName", "Type", "ShippingStreet", "ShippingCity", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "Description", "OwnerId", "CreatedDate", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_Industry__c", "INT_MunicipalityNumber__c", "INT_OrganizationNumber__c", "INT_OrganizationalStructureDesc__c", "OrganizationNumberFormula__c", "NAV_Market_Region__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Main_Industry__c", "TAG_NavUnit__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "CRM_Region__pc", "CRM_Unit__pc", "MAR_NAVUnitText__c" ]
         }
       }
     },
@@ -296,7 +295,7 @@
   "ui" : {
     "nodes" : {
       "LOAD_DATASET0" : {
-        "label" : "Account_dev",
+        "label" : "Account",
         "description" : "",
         "type" : "LOAD_DATASET",
         "top" : 112,

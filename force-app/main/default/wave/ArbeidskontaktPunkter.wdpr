@@ -18,7 +18,7 @@
       "action" : "load",
       "sources" : [ ],
       "parameters" : {
-        "fields" : [ "CRM_RegistrationYear__c", "CRM_Region__pc", "INT_OrganizationalStructureDesc__c", "LastReferencedDate", "TAG_NavUnit__c", "industri.shortName", "NAV_Region__c", "Name", "TAG_Main_Industry__c", "LastViewedDate", "TAG_Last_completed_activity_date__c", "Shipping_State__c", "TAG_Employer_Region__c", "Likelyhoodtoacceptcontact_bucket", "ShippingPostalCode", "LastActivityDate", "Id", "INT_RegDateEreg__c", "NumberOfEmployees", "INT_PotentialMandays__c", "Likelyhoodtoacceptcontact" ],
+        "fields" : [ "CRM_RegistrationYear__c", "CRM_Region__pc", "INT_OrganizationalStructureDesc__c", "LastReferencedDate", "industri.shortName", "NAV_Region__c", "Name", "TAG_Main_Industry__c", "LastViewedDate", "TAG_Last_completed_activity_date__c", "Shipping_State__c", "TAG_Employer_Region__c", "Likelyhoodtoacceptcontact_bucket", "ShippingPostalCode", "LastActivityDate", "Id", "INT_RegDateEreg__c", "NumberOfEmployees", "INT_PotentialMandays__c", "Likelyhoodtoacceptcontact", "MAR_NAVUnitText__c" ],
         "dataset" : {
           "type" : "analyticsDataset",
           "label" : "Kontoer_marked",
@@ -224,10 +224,6 @@
       "objectName" : "Kontoer_marked"
     }, {
       "fieldName" : "LastReferencedDate",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "TAG_NavUnit__c",
       "objectType" : "analyticsDataset",
       "objectName" : "Kontoer_marked"
     }, {
