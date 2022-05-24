@@ -30,6 +30,7 @@
       "action" : "join",
       "sources" : [ "LOAD_DATASET2", "APPEND0" ],
       "schema" : {
+        "fields" : [ ],
         "slice" : {
           "mode" : "DROP",
           "ignoreMissingFields" : true,
@@ -108,7 +109,7 @@
     },
     "OUTPUT0" : {
       "action" : "save",
-      "sources" : [ "JOIN1" ],
+      "sources" : [ "DROP_FIELDS0" ],
       "parameters" : {
         "fields" : [ ],
         "dataset" : {
@@ -116,6 +117,18 @@
           "label" : "Kontoer.Oppgaver.Møter",
           "name" : "AccountsTaskEvents",
           "folderName" : "Markedsavdelingen_v1"
+        }
+      }
+    },
+    "DROP_FIELDS0" : {
+      "action" : "schema",
+      "sources" : [ "JOIN1" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Id", "CRM_Region__pc", "INT_RegDateEreg__c", "TaskEvent.RecordTypeId", "TaskEvent.CRM_Region__c", "TaskEvent.CRM_Unit__c" ]
         }
       }
     }
@@ -168,7 +181,18 @@
         "description" : "",
         "type" : "OUTPUT",
         "top" : 252,
-        "left" : 672
+        "left" : 952
+      },
+      "TRANSFORM0" : {
+        "label" : "drop.collumns",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 252,
+        "left" : 672,
+        "graph" : {
+          "DROP_FIELDS0" : null
+        },
+        "connectors" : [ ]
       }
     },
     "connectors" : [ {
@@ -185,8 +209,159 @@
       "target" : "APPEND0"
     }, {
       "source" : "JOIN1",
+      "target" : "TRANSFORM0"
+    }, {
+      "source" : "TRANSFORM0",
       "target" : "OUTPUT0"
     } ],
-    "hiddenColumns" : [ ]
+    "hiddenColumns" : [ {
+      "fieldName" : "CRM_RegistrationYear__c",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "INT_OrganizationalStructureDesc__c",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "LastReferencedDate",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "TAG_NavUnit__c",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "industri.shortName",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "NAV_Region__c",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "Name",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "TAG_Main_Industry__c",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "LastViewedDate",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "TAG_Last_completed_activity_date__c",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "Shipping_State__c",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "TAG_Employer_Region__c",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "Likelyhoodtoacceptcontact_bucket",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "ShippingPostalCode",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "LastActivityDate",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "NumberOfEmployees",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "INT_PotentialMandays__c",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "Likelyhoodtoacceptcontact",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
+    }, {
+      "fieldName" : "Id",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "RecordTypeId",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "WhatId",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "Subject",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "ActivityDate",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "Status",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "Priority",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "IsHighPriority",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "Type",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "AccountId",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "IsClosed",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "LastModifiedDate",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "CompletedDateTime",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "CRM_Region__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "CRM_Unit__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "Date__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "TAG_ActivityType__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Task"
+    }, {
+      "fieldName" : "TAG_Status__c",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Event"
+    }, {
+      "fieldName" : "IsAllDayEvent",
+      "objectType" : "connectedDataset",
+      "objectName" : "SFDC_LOCAL$Event"
+    } ]
   }
 }
