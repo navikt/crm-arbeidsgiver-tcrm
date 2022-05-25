@@ -131,6 +131,57 @@
           "fields" : [ "Id", "CRM_Region__pc", "INT_RegDateEreg__c", "TaskEvent.RecordTypeId", "TaskEvent.CRM_Region__c", "TaskEvent.CRM_Unit__c" ]
         }
       }
+    },
+    "EXTRACT0" : {
+      "action" : "extractGrains",
+      "sources" : [ "DROP_FIELDS0" ],
+      "parameters" : {
+        "grainExtractions" : [ ]
+      }
+    },
+    "AGGREGATE1" : {
+      "action" : "aggregate",
+      "sources" : [ "EXTRACT0" ],
+      "parameters" : {
+        "aggregations" : [ {
+          "action" : "UNIQUE",
+          "source" : "TaskEvent.Id",
+          "name" : "UNIQUE_TaskEvent.Id",
+          "label" : "Antall aktiviteter"
+        } ],
+        "groupings" : [ "TaskEvent.AccountId", "TaskEvent.TAG_ActivityType__c", "TaskEvent.Type" ],
+        "nodeType" : "STANDARD"
+      }
+    },
+    "JOIN2" : {
+      "action" : "join",
+      "sources" : [ "DROP_FIELDS0", "AGGREGATE1" ],
+      "schema" : {
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "OUTER",
+        "leftKeys" : [ "TaskEvent.AccountId" ],
+        "rightQualifier" : "Aggregater",
+        "rightKeys" : [ "TaskEvent.AccountId" ]
+      }
+    },
+    "OUTPUT1" : {
+      "action" : "save",
+      "sources" : [ "JOIN2" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Kontoer.Oppgaver.Møter.Aggregert",
+          "name" : "AccountsTaskEventAggregeted",
+          "folderName" : "Markedsavdelingen_v1"
+        }
+      }
     }
   },
   "ui" : {
@@ -193,6 +244,34 @@
           "DROP_FIELDS0" : null
         },
         "connectors" : [ ]
+      },
+      "AGGREGATE0" : {
+        "label" : "Aggregate.rows",
+        "description" : "",
+        "type" : "AGGREGATE",
+        "top" : 253.3,
+        "left" : 812,
+        "graph" : {
+          "EXTRACT0" : null,
+          "AGGREGATE1" : null
+        },
+        "connectors" : [ {
+          "source" : "EXTRACT0",
+          "target" : "AGGREGATE1"
+        } ]
+      },
+      "JOIN2" : {
+        "label" : "Join 2",
+        "type" : "JOIN",
+        "top" : 393.3,
+        "left" : 952
+      },
+      "OUTPUT1" : {
+        "label" : "Create.Kontoer.Oppgaver.Møter.Aggregert",
+        "description" : "",
+        "type" : "OUTPUT",
+        "top" : 392,
+        "left" : 1092
       }
     },
     "connectors" : [ {
@@ -213,6 +292,18 @@
     }, {
       "source" : "TRANSFORM0",
       "target" : "OUTPUT0"
+    }, {
+      "source" : "TRANSFORM0",
+      "target" : "AGGREGATE0"
+    }, {
+      "source" : "TRANSFORM0",
+      "target" : "JOIN2"
+    }, {
+      "source" : "AGGREGATE0",
+      "target" : "JOIN2"
+    }, {
+      "source" : "JOIN2",
+      "target" : "OUTPUT1"
     } ],
     "hiddenColumns" : [ {
       "fieldName" : "CRM_RegistrationYear__c",
@@ -358,6 +449,10 @@
       "fieldName" : "IsAllDayEvent",
       "objectType" : "connectedDataset",
       "objectName" : "SFDC_LOCAL$Event"
+    }, {
+      "fieldName" : "MAR_NAVUnitText__c",
+      "objectType" : "analyticsDataset",
+      "objectName" : "Kontoer_marked"
     } ]
   }
 }
