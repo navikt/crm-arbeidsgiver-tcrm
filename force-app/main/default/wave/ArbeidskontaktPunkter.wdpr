@@ -150,6 +150,7 @@
           "label" : "Antall aktiviteter"
         } ],
         "groupings" : [ "TaskEvent.AccountId", "TaskEvent.TAG_ActivityType__c", "TaskEvent.Type" ],
+        "pivots" : [ ],
         "nodeType" : "STANDARD"
       }
     },
@@ -157,6 +158,7 @@
       "action" : "join",
       "sources" : [ "DROP_FIELDS0", "AGGREGATE1" ],
       "schema" : {
+        "fields" : [ ],
         "slice" : {
           "mode" : "DROP",
           "ignoreMissingFields" : true,
@@ -180,6 +182,35 @@
           "label" : "Kontoer.Oppgaver.Møter.Aggregert",
           "name" : "AccountsTaskEventAggregeted",
           "folderName" : "Markedsavdelingen_v1"
+        }
+      }
+    },
+    "JOIN3" : {
+      "action" : "join",
+      "sources" : [ "JOIN2", "LOAD_DATASET4" ],
+      "schema" : {
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "LEFT_OUTER",
+        "leftKeys" : [ "TaskEvent.AccountId" ],
+        "rightQualifier" : "DialogArena",
+        "rightKeys" : [ "Account__c" ]
+      }
+    },
+    "LOAD_DATASET4" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "DateTo__c", "Account__c", "DateFrom__c", "AktivitetStatuskode__c" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Kontoer.og.ArenaAktiviteter",
+          "name" : "Kontoer_og_ArenaAktiviteter"
         }
       }
     }
@@ -261,7 +292,8 @@
         } ]
       },
       "JOIN2" : {
-        "label" : "Join 2",
+        "label" : "JoinAgregatedActiv",
+        "description" : "",
         "type" : "JOIN",
         "top" : 393.3,
         "left" : 952
@@ -272,6 +304,30 @@
         "type" : "OUTPUT",
         "top" : 392,
         "left" : 1092
+      },
+      "JOIN3" : {
+        "label" : "JoinArenaAktandActivities",
+        "description" : "",
+        "type" : "JOIN",
+        "top" : 533.2,
+        "left" : 1092
+      },
+      "LOAD_DATASET4" : {
+        "label" : "Kontoer.og.ArenaAktiviteter",
+        "type" : "LOAD_DATASET",
+        "top" : 532,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM1" : {
+        "label" : "Transform 1",
+        "type" : "TRANSFORM",
+        "top" : 532,
+        "left" : 1232,
+        "graph" : { },
+        "connectors" : [ ]
       }
     },
     "connectors" : [ {
@@ -304,6 +360,15 @@
     }, {
       "source" : "JOIN2",
       "target" : "OUTPUT1"
+    }, {
+      "source" : "JOIN2",
+      "target" : "JOIN3"
+    }, {
+      "source" : "LOAD_DATASET4",
+      "target" : "JOIN3"
+    }, {
+      "source" : "JOIN3",
+      "target" : "TRANSFORM1"
     } ],
     "hiddenColumns" : [ {
       "fieldName" : "CRM_RegistrationYear__c",
