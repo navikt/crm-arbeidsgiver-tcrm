@@ -189,6 +189,7 @@
       "action" : "join",
       "sources" : [ "JOIN2", "LOAD_DATASET4" ],
       "schema" : {
+        "fields" : [ ],
         "slice" : {
           "mode" : "DROP",
           "ignoreMissingFields" : true,
@@ -211,6 +212,19 @@
           "type" : "analyticsDataset",
           "label" : "Kontoer.og.ArenaAktiviteter",
           "name" : "Kontoer_og_ArenaAktiviteter"
+        }
+      }
+    },
+    "OUTPUT2" : {
+      "action" : "save",
+      "sources" : [ "JOIN3" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "DONOTUSE_Aggregert aktiviter, og tiltak",
+          "name" : "AreneactActivitiesAccounts",
+          "folderName" : "Markedsavdelingen_v1"
         }
       }
     }
@@ -321,13 +335,12 @@
           "sampleSize" : 2000
         }
       },
-      "TRANSFORM1" : {
-        "label" : "Transform 1",
-        "type" : "TRANSFORM",
+      "OUTPUT2" : {
+        "label" : "AreneactActivitiesAccounts",
+        "description" : "",
+        "type" : "OUTPUT",
         "top" : 532,
-        "left" : 1232,
-        "graph" : { },
-        "connectors" : [ ]
+        "left" : 1232
       }
     },
     "connectors" : [ {
@@ -368,7 +381,7 @@
       "target" : "JOIN3"
     }, {
       "source" : "JOIN3",
-      "target" : "TRANSFORM1"
+      "target" : "OUTPUT2"
     } ],
     "hiddenColumns" : [ {
       "fieldName" : "CRM_RegistrationYear__c",
