@@ -18,7 +18,7 @@
       "action" : "load",
       "sources" : [ ],
       "parameters" : {
-        "fields" : [ "CRM_RegistrationYear__c", "CRM_Region__pc", "INT_OrganizationalStructureDesc__c", "LastReferencedDate", "industri.shortName", "NAV_Region__c", "Name", "TAG_Main_Industry__c", "LastViewedDate", "TAG_Last_completed_activity_date__c", "Shipping_State__c", "TAG_Employer_Region__c", "Likelyhoodtoacceptcontact_bucket", "ShippingPostalCode", "LastActivityDate", "Id", "INT_RegDateEreg__c", "NumberOfEmployees", "INT_PotentialMandays__c", "Likelyhoodtoacceptcontact", "MAR_NAVUnitText__c" ],
+        "fields" : [ "CRM_RegistrationYear__c", "LastReferencedDate", "NAV_Region__c", "Name", "TAG_Main_Industry__c", "LastViewedDate", "TAG_Last_completed_activity_date__c", "Shipping_State__c", "TAG_Employer_Region__c", "Likelyhoodtoacceptcontact_bucket", "ShippingPostalCode", "LastActivityDate", "Id", "NumberOfEmployees", "INT_PotentialMandays__c", "Likelyhoodtoacceptcontact" ],
         "dataset" : {
           "type" : "analyticsDataset",
           "label" : "Kontoer_marked",
@@ -124,11 +124,10 @@
       "action" : "schema",
       "sources" : [ "JOIN1" ],
       "parameters" : {
-        "fields" : [ ],
         "slice" : {
           "mode" : "DROP",
           "ignoreMissingFields" : true,
-          "fields" : [ "Id", "CRM_Region__pc", "INT_RegDateEreg__c", "TaskEvent.RecordTypeId", "TaskEvent.CRM_Region__c", "TaskEvent.CRM_Unit__c" ]
+          "fields" : [ "Id", "TaskEvent.RecordTypeId" ]
         }
       }
     },
@@ -207,7 +206,7 @@
       "action" : "load",
       "sources" : [ ],
       "parameters" : {
-        "fields" : [ "DateTo__c", "Account__c", "DateFrom__c", "AktivitetStatuskode__c" ],
+        "fields" : [ "AktivitetStatuskode__c", "DateTo__c", "DateFrom__c", "Account__c", "Account.MAR_NAVUnitText__c" ],
         "dataset" : {
           "type" : "analyticsDataset",
           "label" : "Kontoer.og.ArenaAktiviteter",
@@ -388,15 +387,7 @@
       "objectType" : "analyticsDataset",
       "objectName" : "Kontoer_marked"
     }, {
-      "fieldName" : "INT_OrganizationalStructureDesc__c",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
       "fieldName" : "LastReferencedDate",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "industri.shortName",
       "objectType" : "analyticsDataset",
       "objectName" : "Kontoer_marked"
     }, {
@@ -527,10 +518,6 @@
       "fieldName" : "IsAllDayEvent",
       "objectType" : "connectedDataset",
       "objectName" : "SFDC_LOCAL$Event"
-    }, {
-      "fieldName" : "MAR_NAVUnitText__c",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
     } ]
   }
 }

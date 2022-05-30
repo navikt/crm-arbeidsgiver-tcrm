@@ -5,7 +5,7 @@
       "action" : "load",
       "sources" : [ ],
       "parameters" : {
-        "fields" : [ "Id", "Name", "LastName", "FirstName", "Type", "ShippingStreet", "ShippingCity", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "Description", "OwnerId", "CreatedDate", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "IsPersonAccount", "AccountSource", "SicDesc", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_IndustryCode__c", "INT_Industry__c", "INT_MunicipalityNumber__c", "INT_OrganizationNumber__c", "INT_OrganizationalStructureDesc__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "INT_SectorCode__c", "INT_Sector__c", "OrganizationNumberFormula__c", "NAV_Market_Region__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Last_completed_activity_date__c", "TAG_Main_Industry__c", "TAG_Sector__c", "CRM_Region__pc", "CRM_Unit__pc", "Source__pc", "SourceFormula__pc", "MAR_NAVUnitText__c" ],
+        "fields" : [ "Id", "Name", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "IsPersonAccount", "AccountSource", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_IndustryCode__c", "INT_MunicipalityNumber__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "INT_SectorCode__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Last_completed_activity_date__c", "TAG_Main_Industry__c", "MAR_NAVUnitText__c", "SourceFormula__pc", "ShippingCity", "INT_OrganizationNumber__c" ],
         "dataset" : {
           "type" : "connectedDataset",
           "label" : "Account",
@@ -43,7 +43,7 @@
       "action" : "load",
       "sources" : [ ],
       "parameters" : {
-        "fields" : [ "Id", "Account__c", "AktivitetStatuskode__c", "Aktivitetstype__c", "DateFrom__c", "DateTo__c", "NAV_Kontor__c", "NAVenhet__c" ],
+        "fields" : [ "Id", "Account__c", "AktivitetStatuskode__c", "Aktivitetstype__c", "DateFrom__c", "DateTo__c", "NAV_Kontor__c" ],
         "dataset" : {
           "type" : "connectedDataset",
           "label" : "ArenaActivity__c",
@@ -72,7 +72,7 @@
     },
     "OUTPUT1" : {
       "action" : "save",
-      "sources" : [ "EDIT_ATTRIBUTES1" ],
+      "sources" : [ "JOIN2" ],
       "parameters" : {
         "fields" : [ ],
         "dataset" : {
@@ -144,7 +144,7 @@
     },
     "EDIT_ATTRIBUTES1" : {
       "action" : "schema",
-      "sources" : [ "JOIN3" ],
+      "sources" : [ "EDIT_ATTRIBUTES0" ],
       "parameters" : {
         "fields" : [ {
           "name" : "Account.INT_IndustryCode__c_formula",
@@ -155,62 +155,15 @@
         } ]
       }
     },
-    "JOIN1" : {
-      "action" : "join",
-      "sources" : [ "FORMULA2", "LOAD_DATASET4" ],
-      "schema" : {
-        "fields" : [ ],
-        "slice" : {
-          "mode" : "DROP",
-          "ignoreMissingFields" : true,
-          "fields" : [ ]
-        }
-      },
-      "parameters" : {
-        "joinType" : "LOOKUP",
-        "leftKeys" : [ "Industry.group" ],
-        "rightQualifier" : "industri",
-        "rightKeys" : [ "code" ]
-      }
-    },
-    "LOAD_DATASET4" : {
-      "action" : "load",
-      "sources" : [ ],
-      "parameters" : {
-        "fields" : [ "shortName", "code" ],
-        "dataset" : {
-          "type" : "analyticsDataset",
-          "label" : "industri_grupper",
-          "name" : "industri_grupper"
-        }
-      }
-    },
-    "JOIN3" : {
-      "action" : "join",
-      "sources" : [ "EDIT_ATTRIBUTES0", "LOAD_DATASET4" ],
-      "schema" : {
-        "fields" : [ ],
-        "slice" : {
-          "mode" : "DROP",
-          "ignoreMissingFields" : true,
-          "fields" : [ ]
-        }
-      },
-      "parameters" : {
-        "joinType" : "LOOKUP",
-        "leftKeys" : [ "Account.INT_IndustryCode__c_formula" ],
-        "rightQualifier" : "industri",
-        "rightKeys" : [ "code" ]
-      }
-    },
     "DROP_FIELDS0" : {
       "action" : "schema",
-      "sources" : [ "JOIN1" ],
+      "sources" : [ "FORMULA2" ],
       "parameters" : {
+        "fields" : [ ],
         "slice" : {
           "mode" : "SELECT",
           "ignoreMissingFields" : true,
-          "fields" : [ "Id", "IsPersonAccount", "INT_IndustryCode__c", "TAG_Last_completed_activity_date__c", "Likelyhoodtoacceptcontact", "Industry.group", "industri.shortName", "Name", "LastName", "FirstName", "Type", "ShippingStreet", "ShippingCity", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "Description", "OwnerId", "CreatedDate", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_Industry__c", "INT_MunicipalityNumber__c", "INT_OrganizationNumber__c", "INT_OrganizationalStructureDesc__c", "OrganizationNumberFormula__c", "NAV_Market_Region__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Main_Industry__c", "TAG_NavUnit__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "CRM_Region__pc", "CRM_Unit__pc", "MAR_NAVUnitText__c" ]
+          "fields" : [ "Id", "Name", "LastName", "FirstName", "Type", "ShippingStreet", "ShippingCity", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "Description", "OwnerId", "CreatedDate", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "IsPersonAccount", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_IndustryCode__c", "INT_Industry__c", "INT_MunicipalityNumber__c", "INT_OrganizationNumber__c", "INT_OrganizationalStructureDesc__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "OrganizationNumberFormula__c", "NAV_Market_Region__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Last_completed_activity_date__c", "TAG_Main_Industry__c", "CRM_Region__pc", "CRM_Unit__pc", "Likelyhoodtoacceptcontact" ]
         }
       }
     },
@@ -249,7 +202,7 @@
     },
     "EXTRACT0" : {
       "action" : "extractGrains",
-      "sources" : [ "EDIT_ATTRIBUTES1" ],
+      "sources" : [ "FILTER1" ],
       "parameters" : {
         "grainExtractions" : [ ]
       }
@@ -259,36 +212,87 @@
       "sources" : [ "EXTRACT0" ],
       "parameters" : {
         "aggregations" : [ {
-          "action" : "COUNT",
-          "name" : "activities.for.account",
-          "label" : "Antall aktiviteter"
+          "action" : "UNIQUE",
+          "source" : "Id",
+          "name" : "UNIQUE_Id",
+          "label" : "Unique Record ID"
         } ],
         "groupings" : [ "Account.Id" ],
         "pivots" : [ ],
-        "pivot_v2" : {
-          "sourceFields" : [ "Aktivitetstype__c" ],
-          "valueCombinations" : [ [ "GJENN" ] ],
-          "pivotFieldsInfo" : {
-            "activities.for.account" : [ {
-              "name" : "activities.for.account_GJENN",
-              "label" : "Antall aktiviteter by GJENN"
-            } ]
-          }
-        },
         "nodeType" : "STANDARD"
       }
     },
-    "OUTPUT2" : {
-      "action" : "save",
-      "sources" : [ "AGGREGATE1" ],
+    "FILTER1" : {
+      "action" : "filter",
+      "sources" : [ "EDIT_ATTRIBUTES1" ],
       "parameters" : {
+        "filterExpressions" : [ {
+          "type" : "TEXT",
+          "field" : "AktivitetStatuskode__c",
+          "operator" : "NOT",
+          "operands" : [ "AVBR", "PLAN" ]
+        }, {
+          "type" : "TEXT",
+          "field" : "Aktivitetstype__c",
+          "operator" : "CONTAINS",
+          "operands" : [ "Varig tilrettelagt arbeid i ordinær virksomhet", "lønnstilksudd", "mentor" ]
+        } ]
+      }
+    },
+    "FORMULA3" : {
+      "action" : "computeRelative",
+      "sources" : [ "EDIT_ATTRIBUTES1" ],
+      "parameters" : {
+        "partitionBy" : [ "Account.Id" ],
+        "orderBy" : [ {
+          "fieldName" : "DateTo__c",
+          "direction" : "DESC"
+        } ],
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "DATETIME",
+          "name" : "LastArenaActDate__c",
+          "label" : "Last Arena activity",
+          "formulaExpression" : "first_value(DateTo__c)",
+          "format" : "dd/MM/yyyy",
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "JOIN1" : {
+      "action" : "join",
+      "sources" : [ "FORMULA3", "AGGREGATE1" ],
+      "schema" : {
         "fields" : [ ],
-        "dataset" : {
-          "type" : "analyticsDataset",
-          "label" : "Aggregert antall aktiviteter",
-          "name" : "AgregetedArenaact",
-          "folderName" : "Markedsavdelingen_v1"
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
         }
+      },
+      "parameters" : {
+        "joinType" : "LOOKUP",
+        "leftKeys" : [ "Account.Id" ],
+        "rightQualifier" : "Aggregater",
+        "rightKeys" : [ "Account.Id" ]
+      }
+    },
+    "JOIN2" : {
+      "action" : "join",
+      "sources" : [ "JOIN1", "FORMULA2" ],
+      "schema" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "LOOKUP",
+        "leftKeys" : [ "Account.Id" ],
+        "rightQualifier" : "scoring",
+        "rightKeys" : [ "Id" ]
       }
     }
   },
@@ -315,7 +319,7 @@
         "label" : "Create \"Kontoer\"",
         "description" : "Creates the datasource: \"Kontoer\".",
         "type" : "OUTPUT",
-        "top" : 252,
+        "top" : 392.9,
         "left" : 812
       },
       "LOAD_DATASET1" : {
@@ -339,7 +343,7 @@
         "description" : "",
         "type" : "OUTPUT",
         "top" : 112,
-        "left" : 952
+        "left" : 1372
       },
       "TRANSFORM0" : {
         "label" : "add.scoring",
@@ -394,27 +398,6 @@
         },
         "connectors" : [ ]
       },
-      "JOIN1" : {
-        "label" : "Join 1",
-        "type" : "JOIN",
-        "top" : 252,
-        "left" : 532
-      },
-      "LOAD_DATASET4" : {
-        "label" : "industri_grupper",
-        "type" : "LOAD_DATASET",
-        "top" : 392,
-        "left" : 392,
-        "parameters" : {
-          "sampleSize" : 2000
-        }
-      },
-      "JOIN3" : {
-        "label" : "Join 3",
-        "type" : "JOIN",
-        "top" : 112,
-        "left" : 672
-      },
       "TRANSFORM3" : {
         "label" : "drop.collumns",
         "description" : "",
@@ -445,12 +428,37 @@
           "target" : "AGGREGATE1"
         } ]
       },
-      "OUTPUT2" : {
-        "label" : "Create.AgregatedAreneact",
+      "FILTER1" : {
+        "label" : "Filterer.Arenaaktivitiet",
         "description" : "",
-        "type" : "OUTPUT",
-        "top" : 394.1,
+        "type" : "FILTER",
+        "top" : 252,
+        "left" : 812.5
+      },
+      "TRANSFORM4" : {
+        "label" : "LastArenaActivityDate",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 952,
+        "graph" : {
+          "FORMULA3" : null
+        },
+        "connectors" : [ ]
+      },
+      "JOIN1" : {
+        "label" : "JoinAggregates",
+        "description" : "",
+        "type" : "JOIN",
+        "top" : 112,
         "left" : 1092
+      },
+      "JOIN2" : {
+        "label" : "JoinScoring",
+        "description" : "",
+        "type" : "JOIN",
+        "top" : 111.9,
+        "left" : 1232
       }
     },
     "connectors" : [ {
@@ -463,7 +471,7 @@
       "source" : "FILTER0",
       "target" : "JOIN0"
     }, {
-      "source" : "TRANSFORM2",
+      "source" : "JOIN2",
       "target" : "OUTPUT1"
     }, {
       "source" : "FILTER0",
@@ -472,55 +480,42 @@
       "source" : "JOIN0",
       "target" : "TRANSFORM1"
     }, {
-      "source" : "TRANSFORM0",
-      "target" : "JOIN1"
-    }, {
-      "source" : "LOAD_DATASET4",
-      "target" : "JOIN1"
-    }, {
       "source" : "TRANSFORM3",
       "target" : "OUTPUT0"
     }, {
-      "source" : "TRANSFORM1",
-      "target" : "JOIN3"
-    }, {
-      "source" : "LOAD_DATASET4",
-      "target" : "JOIN3"
-    }, {
-      "source" : "JOIN3",
-      "target" : "TRANSFORM2"
-    }, {
-      "source" : "JOIN1",
-      "target" : "TRANSFORM3"
-    }, {
-      "source" : "TRANSFORM2",
+      "source" : "FILTER1",
       "target" : "AGGREGATE0"
     }, {
+      "source" : "TRANSFORM0",
+      "target" : "TRANSFORM3"
+    }, {
+      "source" : "TRANSFORM1",
+      "target" : "TRANSFORM2"
+    }, {
+      "source" : "TRANSFORM2",
+      "target" : "FILTER1"
+    }, {
+      "source" : "TRANSFORM2",
+      "target" : "TRANSFORM4"
+    }, {
+      "source" : "TRANSFORM4",
+      "target" : "JOIN1"
+    }, {
       "source" : "AGGREGATE0",
-      "target" : "OUTPUT2"
+      "target" : "JOIN1"
+    }, {
+      "source" : "JOIN1",
+      "target" : "JOIN2"
+    }, {
+      "source" : "TRANSFORM0",
+      "target" : "JOIN2"
     } ],
     "hiddenColumns" : [ {
       "fieldName" : "AccountSource",
       "objectType" : "connectedDataset",
       "objectName" : "SFDC_LOCAL$Account"
     }, {
-      "fieldName" : "SicDesc",
-      "objectType" : "connectedDataset",
-      "objectName" : "SFDC_LOCAL$Account"
-    }, {
       "fieldName" : "INT_SectorCode__c",
-      "objectType" : "connectedDataset",
-      "objectName" : "SFDC_LOCAL$Account"
-    }, {
-      "fieldName" : "INT_Sector__c",
-      "objectType" : "connectedDataset",
-      "objectName" : "SFDC_LOCAL$Account"
-    }, {
-      "fieldName" : "TAG_Sector__c",
-      "objectType" : "connectedDataset",
-      "objectName" : "SFDC_LOCAL$Account"
-    }, {
-      "fieldName" : "Source__pc",
       "objectType" : "connectedDataset",
       "objectName" : "SFDC_LOCAL$Account"
     }, {
@@ -529,14 +524,6 @@
       "objectName" : "SFDC_LOCAL$Account"
     }, {
       "fieldName" : "Id",
-      "objectType" : "connectedDataset",
-      "objectName" : "SFDC_LOCAL$ArenaActivity__c"
-    }, {
-      "fieldName" : "AktivitetStatuskode__c",
-      "objectType" : "connectedDataset",
-      "objectName" : "SFDC_LOCAL$ArenaActivity__c"
-    }, {
-      "fieldName" : "Aktivitetstype__c",
       "objectType" : "connectedDataset",
       "objectName" : "SFDC_LOCAL$ArenaActivity__c"
     }, {
@@ -549,10 +536,6 @@
       "objectName" : "SFDC_LOCAL$ArenaActivity__c"
     }, {
       "fieldName" : "NAV_Kontor__c",
-      "objectType" : "connectedDataset",
-      "objectName" : "SFDC_LOCAL$ArenaActivity__c"
-    }, {
-      "fieldName" : "NAVenhet__c",
       "objectType" : "connectedDataset",
       "objectName" : "SFDC_LOCAL$ArenaActivity__c"
     } ]
