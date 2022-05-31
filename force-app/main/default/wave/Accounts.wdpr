@@ -159,11 +159,10 @@
       "action" : "schema",
       "sources" : [ "FORMULA2" ],
       "parameters" : {
-        "fields" : [ ],
         "slice" : {
           "mode" : "SELECT",
           "ignoreMissingFields" : true,
-          "fields" : [ "Id", "Name", "LastName", "FirstName", "Type", "ShippingStreet", "ShippingCity", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "Description", "OwnerId", "CreatedDate", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "IsPersonAccount", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_IndustryCode__c", "INT_Industry__c", "INT_MunicipalityNumber__c", "INT_OrganizationNumber__c", "INT_OrganizationalStructureDesc__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "OrganizationNumberFormula__c", "NAV_Market_Region__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Last_completed_activity_date__c", "TAG_Main_Industry__c", "CRM_Region__pc", "CRM_Unit__pc", "Likelyhoodtoacceptcontact" ]
+          "fields" : [ "Id", "Name", "LastName", "FirstName", "Type", "ShippingStreet", "ShippingCity", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "Description", "OwnerId", "CreatedDate", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "IsPersonAccount", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_IndustryCode__c", "INT_Industry__c", "INT_MunicipalityNumber__c", "INT_OrganizationNumber__c", "INT_OrganizationalStructureDesc__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "OrganizationNumberFormula__c", "NAV_Market_Region__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Last_completed_activity_date__c", "TAG_Main_Industry__c", "CRM_Region__pc", "CRM_Unit__pc", "Likelyhoodtoacceptcontact", "MAR_NAVUnitText__c" ]
         }
       }
     },
