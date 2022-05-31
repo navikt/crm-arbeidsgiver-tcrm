@@ -227,7 +227,7 @@
       "action" : "load",
       "sources" : [ ],
       "parameters" : {
-        "fields" : [ "scoring.CRM_RegistrationYear__c", "Account.CRM_AccountType__c", "Account.CRM_MainIndustry__c", "DateTo__c", "NAV_Kontor__c", "scoring.AccountSource", "Account.LastReferencedDate", "Account.MAR_NAVUnitText__c", "scoring.LastViewedDate", "scoring.ShippingPostalCode", "Account.ShippingCity", "scoring.INT_RegDateEreg__c", "Account.SourceFormula__pc", "scoring.INT_RegionNumber__c", "Account.INT_IndustryCode__c_formula", "Account.TAG_Main_Industry__c", "Account.TAG_Employer_Region__c", "Account.INT_MunicipalityNumber__c", "scoring.Name", "scoring.CRM_AccountType__c", "scoring.LastReferencedDate", "Account.CRM_RegistrationYear__c", "Account.INT_IndustryCode__c", "scoring.INT_MunicipalityNumber__c", "scoring.Industry.group", "Account.INT_OrganizationNumber__c", "Account.NAV_Region__c", "Account.Shipping_State__c", "scoring.TAG_Last_completed_activity_date__c", "scoring.Id", "scoring.INT_OrganizationNumber__c", "Account__c", "Id", "LastArenaActDate__c", "Account.INT_RegDateEreg__c", "Account.TAG_Last_completed_activity_date__c", "Account.LastActivityDate", "Account.ShippingState", "AktivitetStatuskode__c", "scoring.IsPersonAccount", "scoring.TAG_Employer_Region__c", "Aktivitetstype__c", "scoring.NAV_Region__c", "Account.Industry", "scoring.TAG_Main_Industry__c", "Account.INT_RegionNumber__c", "Account.Id", "DateFrom__c", "Account.INT_SectorCode__c", "scoring.CRM_MainIndustry__c" ],
+        "fields" : [ "scoring.CRM_RegistrationYear__c", "Account.LastReferencedDate", "Account.MAR_NAVUnitText__c", "scoring.ShippingPostalCode", "Account.SourceFormula__pc", "Account.TAG_Main_Industry__c", "Account.TAG_Employer_Region__c", "scoring.Name", "Account.INT_OrganizationNumber__c", "Account.NAV_Region__c", "Id", "LastArenaActDate__c", "Account.TAG_Last_completed_activity_date__c", "Account.LastActivityDate", "AktivitetStatuskode__c", "Aktivitetstype__c", "Account.Industry", "Account.Id", "scoring.CRM_MainIndustry__c", "scoring.Likelyhoodtoacceptcontact", "scoring.Likelyhoodtoacceptcontact_bucket" ],
         "dataset" : {
           "type" : "analyticsDataset",
           "label" : "Kontoer.og.ArenaAktiviteter",
@@ -239,7 +239,7 @@
       "action" : "computeRelative",
       "sources" : [ "JOIN3" ],
       "parameters" : {
-        "partitionBy" : [ "KontoerogA.scoring.Id" ],
+        "partitionBy" : [ "KontoerogA.Account.Id" ],
         "orderBy" : [ {
           "fieldName" : "CompletedDateTime",
           "direction" : "DESC"
@@ -264,7 +264,7 @@
           "type" : "TEXT",
           "name" : "HasActivityLast6Months",
           "label" : "Has activity last 6 months",
-          "formulaExpression" : "case \n\twhen datediff(current_date(), \"Account.TAG_Last_completed_activity_date__c\") > 180\n\tthen 'NO'\n\telse\n\t'YES'\nend",
+          "formulaExpression" : "case \n\twhen datediff(current_date(), \"Account.TAG_Last_completed_activity_date__c\") < 180\n\tthen 'YES'\n\telse\n\t'NO'\nend",
           "precision" : 255,
           "defaultValue" : ""
         } ]
@@ -283,7 +283,7 @@
           "type" : "TEXT",
           "field" : "LastActivityType",
           "operator" : "EQUAL",
-          "operands" : [ "Rekruttering og inkludering" ]
+          "operands" : [ "Rekruttere og inkludere" ]
         } ]
       }
     },

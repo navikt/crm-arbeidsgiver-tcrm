@@ -159,6 +159,7 @@
       "action" : "schema",
       "sources" : [ "FORMULA2" ],
       "parameters" : {
+        "fields" : [ ],
         "slice" : {
           "mode" : "SELECT",
           "ignoreMissingFields" : true,
@@ -278,7 +279,7 @@
     },
     "JOIN2" : {
       "action" : "join",
-      "sources" : [ "JOIN1", "FORMULA2" ],
+      "sources" : [ "JOIN1", "BUCKET1" ],
       "schema" : {
         "fields" : [ ],
         "slice" : {
@@ -293,6 +294,35 @@
         "rightQualifier" : "scoring",
         "rightKeys" : [ "Id" ]
       }
+    },
+    "BUCKET1" : {
+      "action" : "bucket",
+      "sources" : [ "FORMULA2" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Likelyhoodtoacceptcontact_bucket",
+          "label" : "Sannsynlighet for tiltak Bucket",
+          "type" : "TEXT",
+          "bucketsSetup" : {
+            "isPassthroughEnabled" : false,
+            "sourceField" : {
+              "name" : "Likelyhoodtoacceptcontact",
+              "type" : "NUMBER"
+            },
+            "buckets" : [ {
+              "value" : "Lav",
+              "rangeEnd" : 0.3
+            }, {
+              "value" : "Medium",
+              "rangeStart" : 0.3,
+              "rangeEnd" : 0.7
+            }, {
+              "value" : "Høy",
+              "rangeStart" : 0.7
+            } ]
+          }
+        } ]
+      }
     }
   },
   "ui" : {
@@ -301,7 +331,7 @@
         "label" : "Account",
         "description" : "",
         "type" : "LOAD_DATASET",
-        "top" : 112,
+        "top" : 250.2,
         "left" : 112,
         "parameters" : {
           "sampleSize" : 2000
@@ -311,20 +341,20 @@
         "label" : "Remove person accounts",
         "description" : "Removes all person accounts",
         "type" : "FILTER",
-        "top" : 112,
+        "top" : 250.2,
         "left" : 252
       },
       "OUTPUT0" : {
         "label" : "Create \"Kontoer\"",
         "description" : "Creates the datasource: \"Kontoer\".",
         "type" : "OUTPUT",
-        "top" : 392.9,
+        "top" : 530.2,
         "left" : 812
       },
       "LOAD_DATASET1" : {
         "label" : "ArenaActivity__c",
         "type" : "LOAD_DATASET",
-        "top" : 252,
+        "top" : 390.2,
         "left" : 252,
         "parameters" : {
           "sampleSize" : 2000
@@ -334,21 +364,21 @@
         "label" : "Join-account&arenaact",
         "description" : "",
         "type" : "JOIN",
-        "top" : 112,
+        "top" : 250.2,
         "left" : 392
       },
       "OUTPUT1" : {
         "label" : "Create-Accounts.and.ArenaAct",
         "description" : "",
         "type" : "OUTPUT",
-        "top" : 112,
+        "top" : 250.2,
         "left" : 1372
       },
       "TRANSFORM0" : {
         "label" : "add.scoring",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 252,
+        "top" : 390.2,
         "left" : 392,
         "graph" : {
           "FORMULA0" : {
@@ -390,7 +420,7 @@
         "label" : "rename.collumn",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 112,
+        "top" : 250.2,
         "left" : 812,
         "graph" : {
           "EDIT_ATTRIBUTES1" : null
@@ -401,7 +431,7 @@
         "label" : "drop.collumns",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 252,
+        "top" : 390.2,
         "left" : 672,
         "graph" : {
           "DROP_FIELDS0" : null,
@@ -416,7 +446,7 @@
         "label" : "Aggregate.rows",
         "description" : "",
         "type" : "AGGREGATE",
-        "top" : 251.60000000000002,
+        "top" : 390.2,
         "left" : 952,
         "graph" : {
           "EXTRACT0" : null,
@@ -431,14 +461,14 @@
         "label" : "Filterer.Arenaaktivitiet",
         "description" : "",
         "type" : "FILTER",
-        "top" : 252,
-        "left" : 812.5
+        "top" : 390.2,
+        "left" : 812
       },
       "TRANSFORM4" : {
         "label" : "LastArenaActivityDate",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 112,
+        "top" : 250.2,
         "left" : 952,
         "graph" : {
           "FORMULA3" : null
@@ -449,15 +479,26 @@
         "label" : "JoinAggregates",
         "description" : "",
         "type" : "JOIN",
-        "top" : 112,
+        "top" : 250.2,
         "left" : 1092
       },
       "JOIN2" : {
         "label" : "JoinScoring",
         "description" : "",
         "type" : "JOIN",
-        "top" : 111.9,
+        "top" : 250.2,
         "left" : 1232
+      },
+      "TRANSFORM5" : {
+        "label" : "bucketscores",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 250.2,
+        "left" : 532,
+        "graph" : {
+          "BUCKET1" : null
+        },
+        "connectors" : [ ]
       }
     },
     "connectors" : [ {
@@ -506,8 +547,11 @@
       "source" : "JOIN1",
       "target" : "JOIN2"
     }, {
-      "source" : "TRANSFORM0",
+      "source" : "TRANSFORM5",
       "target" : "JOIN2"
+    }, {
+      "source" : "TRANSFORM0",
+      "target" : "TRANSFORM5"
     } ],
     "hiddenColumns" : [ {
       "fieldName" : "AccountSource",
