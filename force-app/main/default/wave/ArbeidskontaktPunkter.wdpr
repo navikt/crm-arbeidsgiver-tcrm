@@ -18,11 +18,11 @@
       "action" : "load",
       "sources" : [ ],
       "parameters" : {
-        "fields" : [ "CRM_RegistrationYear__c", "LastReferencedDate", "NAV_Region__c", "Name", "TAG_Main_Industry__c", "LastViewedDate", "TAG_Last_completed_activity_date__c", "Shipping_State__c", "TAG_Employer_Region__c", "Likelyhoodtoacceptcontact_bucket", "ShippingPostalCode", "LastActivityDate", "Id", "NumberOfEmployees", "INT_PotentialMandays__c", "Likelyhoodtoacceptcontact", "MAR_NAVUnitText__c" ],
+        "fields" : [ "LastReferencedDate", "MAR_NAVUnitText__c", "NAV_Region__c", "Name", "Industry", "INT_MunicipalityNumber__c", "LastArenaA.LastArenaActDate__c", "TAG_Main_Industry__c", "SourceFormula__pc", "Industry.group", "CRM_MainIndustry__c", "LastViewedDate", "TAG_Last_completed_activity_date__c", "Shipping_State__c", "INT_RegionNumber__c", "LastArenaA.Sistearenaaktivitetstype", "TAG_Employer_Region__c", "Likelyhoodtoacceptcontact_bucket", "ShippingPostalCode", "LastActivityDate", "Id", "INT_RegDateEreg__c", "INT_OrganizationNumber__c", "NumberOfEmployees", "INT_PotentialMandays__c", "ArenaAct.UNIQUE_Id", "Likelyhoodtoacceptcontact" ],
         "dataset" : {
           "type" : "analyticsDataset",
-          "label" : "Kontoer_marked",
-          "name" : "Kontoer_marked"
+          "label" : "Kontoer med aggregert arenaakt",
+          "name" : "AccountAggArenaAct"
         }
       }
     },
@@ -205,41 +205,23 @@
         }
       }
     },
-    "JOIN3" : {
-      "action" : "join",
-      "sources" : [ "APPEND0", "FORMULA2" ],
-      "schema" : {
-        "fields" : [ ],
-        "slice" : {
-          "mode" : "DROP",
-          "ignoreMissingFields" : true,
-          "fields" : [ "WhatId", "Subject", "Status", "AccountId", "LastModifiedDate", "CRM_Region__c", "CRM_Unit__c", "Date__c", "TAG_Status__c", "IsAllDayEvent", "RecordTypeId", "ActivityDate", "Priority", "IsHighPriority", "IsClosed" ]
-        }
-      },
-      "parameters" : {
-        "joinType" : "RIGHT_OUTER",
-        "leftKeys" : [ "AccountId" ],
-        "rightQualifier" : "KontoerogA",
-        "rightKeys" : [ "Account.Id" ]
-      }
-    },
     "LOAD_DATASET4" : {
       "action" : "load",
       "sources" : [ ],
       "parameters" : {
-        "fields" : [ "scoring.CRM_RegistrationYear__c", "Account.LastReferencedDate", "Account.MAR_NAVUnitText__c", "scoring.ShippingPostalCode", "Account.SourceFormula__pc", "Account.TAG_Main_Industry__c", "Account.TAG_Employer_Region__c", "scoring.Name", "Account.INT_OrganizationNumber__c", "Account.NAV_Region__c", "Id", "LastArenaActDate__c", "Account.TAG_Last_completed_activity_date__c", "Account.LastActivityDate", "AktivitetStatuskode__c", "Aktivitetstype__c", "Account.Industry", "Account.Id", "scoring.CRM_MainIndustry__c", "scoring.Likelyhoodtoacceptcontact", "scoring.Likelyhoodtoacceptcontact_bucket" ],
+        "fields" : [ "LastReferencedDate", "MAR_NAVUnitText__c", "NAV_Region__c", "Name", "Industry", "INT_MunicipalityNumber__c", "LastArenaA.LastArenaActDate__c", "TAG_Main_Industry__c", "SourceFormula__pc", "Industry.group", "CRM_MainIndustry__c", "LastViewedDate", "TAG_Last_completed_activity_date__c", "Shipping_State__c", "INT_RegionNumber__c", "LastArenaA.Sistearenaaktivitetstype", "TAG_Employer_Region__c", "Likelyhoodtoacceptcontact_bucket", "ShippingPostalCode", "LastActivityDate", "Id", "INT_RegDateEreg__c", "INT_OrganizationNumber__c", "NumberOfEmployees", "INT_PotentialMandays__c", "ArenaAct.UNIQUE_Id", "Likelyhoodtoacceptcontact" ],
         "dataset" : {
           "type" : "analyticsDataset",
-          "label" : "Kontoer.og.ArenaAktiviteter",
-          "name" : "Kontoer_og_ArenaAktiviteter"
+          "label" : "Kontoer med aggregert arenaakt",
+          "name" : "AccountAggArenaAct"
         }
       }
     },
     "FORMULA1" : {
       "action" : "computeRelative",
-      "sources" : [ "JOIN3" ],
+      "sources" : [ "APPEND0" ],
       "parameters" : {
-        "partitionBy" : [ "KontoerogA.Account.Id" ],
+        "partitionBy" : [ "AccountId" ],
         "orderBy" : [ {
           "fieldName" : "CompletedDateTime",
           "direction" : "DESC"
@@ -255,6 +237,26 @@
         } ]
       }
     },
+    "FORMULA3" : {
+      "action" : "computeRelative",
+      "sources" : [ "FORMULA1" ],
+      "parameters" : {
+        "partitionBy" : [ "AccountId" ],
+        "orderBy" : [ {
+          "fieldName" : "CompletedDateTime",
+          "direction" : "DESC"
+        } ],
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "LastActivityoverallType",
+          "label" : "Siste aktivitets type",
+          "formulaExpression" : "first_value(Type)   ",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
     "FORMULA2" : {
       "action" : "formula",
       "sources" : [ "LOAD_DATASET4" ],
@@ -264,32 +266,15 @@
           "type" : "TEXT",
           "name" : "HasActivityLast6Months",
           "label" : "Has activity last 6 months",
-          "formulaExpression" : "case \n\twhen datediff(current_date(), \"Account.TAG_Last_completed_activity_date__c\") < 180\n\tthen 'YES'\n\telse\n\t'NO'\nend",
+          "formulaExpression" : "case \n\twhen datediff(current_date(), \"TAG_Last_completed_activity_date__c\") < 180\n\tthen 'YES'\n\telse\n\t'NO'\nend",
           "precision" : 255,
           "defaultValue" : ""
         } ]
       }
     },
-    "FILTER0" : {
-      "action" : "filter",
-      "sources" : [ "FORMULA1" ],
-      "parameters" : {
-        "filterExpressions" : [ {
-          "type" : "TEXT",
-          "field" : "KontoerogA.HasActivityLast6Months",
-          "operator" : "EQUAL",
-          "operands" : [ "NO" ]
-        }, {
-          "type" : "TEXT",
-          "field" : "LastActivityType",
-          "operator" : "EQUAL",
-          "operands" : [ "Rekruttere og inkludere" ]
-        } ]
-      }
-    },
     "OUTPUT2" : {
       "action" : "save",
-      "sources" : [ "FILTER0" ],
+      "sources" : [ "FILTER1" ],
       "parameters" : {
         "fields" : [ ],
         "dataset" : {
@@ -299,6 +284,41 @@
           "folderName" : "Markedsavdelingen_v1"
         }
       }
+    },
+    "JOIN3" : {
+      "action" : "join",
+      "sources" : [ "FORMULA2", "FORMULA3" ],
+      "schema" : {
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "CRM_MainIndustry__c", "Activity.RelatedToAccount__c", "Activity.Id", "Activity.WhatId", "Activity.Subject", "Activity.Status", "Activity.Type", "Activity.AccountId", "Activity.LastModifiedDate", "Activity.CompletedDateTime", "Activity.CRM_Region__c", "Activity.CRM_Unit__c", "Activity.Date__c", "Activity.TAG_ActivityType__c", "Activity.TAG_Status__c", "Activity.IsAllDayEvent", "Activity.RecordTypeId", "Activity.ActivityDate", "Activity.Priority", "Activity.IsHighPriority", "Activity.IsClosed" ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "LOOKUP",
+        "leftKeys" : [ "Id" ],
+        "rightQualifier" : "Activity",
+        "rightKeys" : [ "AccountId" ]
+      }
+    },
+    "FILTER1" : {
+      "action" : "filter",
+      "sources" : [ "JOIN3" ],
+      "parameters" : {
+        "filterExpressions" : [ {
+          "type" : "TEXT",
+          "field" : "HasActivityLast6Months",
+          "operator" : "EQUAL",
+          "operands" : [ "NO" ]
+        }, {
+          "type" : "TEXT",
+          "field" : "Activity.LastActivityType",
+          "operator" : "EQUAL",
+          "operands" : [ "Rekruttere og inkludere" ]
+        } ],
+        "filterBooleanLogic" : "1 AND 2"
+      }
     }
   },
   "ui" : {
@@ -306,17 +326,17 @@
       "LOAD_DATASET1" : {
         "label" : "Task",
         "type" : "LOAD_DATASET",
-        "top" : 252,
+        "top" : 112,
         "left" : 112,
         "parameters" : {
           "sampleSize" : 2000
         }
       },
       "LOAD_DATASET2" : {
-        "label" : "Kontoer_marked",
+        "label" : "Kontoer med aggregert arenaakt",
         "type" : "LOAD_DATASET",
-        "top" : 392,
-        "left" : 250.3,
+        "top" : 252,
+        "left" : 252,
         "parameters" : {
           "sampleSize" : 2000
         }
@@ -325,14 +345,14 @@
         "label" : "Join.Task.and.Account",
         "description" : "",
         "type" : "JOIN",
-        "top" : 252,
-        "left" : 670.2
+        "top" : 112,
+        "left" : 392
       },
       "LOAD_DATASET3" : {
         "label" : "Event",
         "type" : "LOAD_DATASET",
-        "top" : 112,
-        "left" : 250.2,
+        "top" : 252,
+        "left" : 112,
         "parameters" : {
           "sampleSize" : 2000
         }
@@ -341,22 +361,22 @@
         "label" : "Append.Taks.and.Event",
         "description" : "",
         "type" : "APPEND",
-        "top" : 252.60000000000002,
-        "left" : 252.10000000000002
+        "top" : 112,
+        "left" : 252
       },
       "OUTPUT0" : {
         "label" : "Create.Kontoer.Oppgaver.Møter",
         "description" : "",
         "type" : "OUTPUT",
-        "top" : 252,
-        "left" : 1090.2
+        "top" : 392,
+        "left" : 672
       },
       "TRANSFORM0" : {
         "label" : "drop.collumns.and.findlast activitytype",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 252,
-        "left" : 810.2,
+        "top" : 112,
+        "left" : 532,
         "graph" : {
           "DROP_FIELDS0" : null,
           "FORMULA0" : null
@@ -370,8 +390,8 @@
         "label" : "Aggregate.rows",
         "description" : "",
         "type" : "AGGREGATE",
-        "top" : 252,
-        "left" : 950.2,
+        "top" : 112,
+        "left" : 672,
         "graph" : {
           "EXTRACT0" : null,
           "AGGREGATE1" : null
@@ -385,28 +405,21 @@
         "label" : "JoinAgregatedActiv",
         "description" : "",
         "type" : "JOIN",
-        "top" : 392,
-        "left" : 1090.3
+        "top" : 112,
+        "left" : 812
       },
       "OUTPUT1" : {
         "label" : "Create.Kontoer.Oppgaver.Møter.Aggregert",
         "description" : "",
         "type" : "OUTPUT",
-        "top" : 392,
-        "left" : 1230.3
-      },
-      "JOIN3" : {
-        "label" : "Join.AccountandArenaact",
-        "description" : "",
-        "type" : "JOIN",
-        "top" : 253.39999999999998,
-        "left" : 392
+        "top" : 112,
+        "left" : 952
       },
       "LOAD_DATASET4" : {
-        "label" : "Kontoer.og.ArenaAktiviteter",
+        "label" : "Kontoer med aggregert arenaakt",
         "type" : "LOAD_DATASET",
-        "top" : 532,
-        "left" : 250.3,
+        "top" : 392,
+        "left" : 252,
         "parameters" : {
           "sampleSize" : 2000
         }
@@ -416,18 +429,22 @@
         "description" : "",
         "type" : "TRANSFORM",
         "top" : 252,
-        "left" : 530.2,
+        "left" : 392,
         "graph" : {
-          "FORMULA1" : null
+          "FORMULA1" : null,
+          "FORMULA3" : null
         },
-        "connectors" : [ ]
+        "connectors" : [ {
+          "source" : "FORMULA1",
+          "target" : "FORMULA3"
+        } ]
       },
       "TRANSFORM2" : {
         "label" : "fomulaHasdialog",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 391.5,
-        "left" : 391.9,
+        "top" : 392,
+        "left" : 392,
         "graph" : {
           "FORMULA2" : {
             "parameters" : {
@@ -437,19 +454,26 @@
         },
         "connectors" : [ ]
       },
-      "FILTER0" : {
-        "label" : "FilterAccountsNoDialog",
-        "description" : "",
-        "type" : "FILTER",
-        "top" : 110.69999999999999,
-        "left" : 672
-      },
       "OUTPUT2" : {
         "label" : "CreateAccountswithoutDialog",
         "description" : "",
         "type" : "OUTPUT",
-        "top" : 111.9,
+        "top" : 252,
         "left" : 812
+      },
+      "JOIN3" : {
+        "label" : "JoinActivity.Accounts",
+        "description" : "",
+        "type" : "JOIN",
+        "top" : 252,
+        "left" : 532
+      },
+      "FILTER1" : {
+        "label" : "FilterAccountswithoutDialog",
+        "description" : "",
+        "type" : "FILTER",
+        "top" : 252,
+        "left" : 672
       }
     },
     "connectors" : [ {
@@ -483,85 +507,25 @@
       "source" : "JOIN2",
       "target" : "OUTPUT1"
     }, {
+      "source" : "LOAD_DATASET4",
+      "target" : "TRANSFORM2"
+    }, {
       "source" : "APPEND0",
-      "target" : "JOIN3"
+      "target" : "TRANSFORM1"
     }, {
       "source" : "TRANSFORM2",
       "target" : "JOIN3"
     }, {
-      "source" : "JOIN3",
-      "target" : "TRANSFORM1"
-    }, {
-      "source" : "LOAD_DATASET4",
-      "target" : "TRANSFORM2"
-    }, {
       "source" : "TRANSFORM1",
-      "target" : "FILTER0"
+      "target" : "JOIN3"
     }, {
-      "source" : "FILTER0",
+      "source" : "JOIN3",
+      "target" : "FILTER1"
+    }, {
+      "source" : "FILTER1",
       "target" : "OUTPUT2"
     } ],
     "hiddenColumns" : [ {
-      "fieldName" : "CRM_RegistrationYear__c",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "LastReferencedDate",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "NAV_Region__c",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "Name",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "TAG_Main_Industry__c",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "LastViewedDate",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "TAG_Last_completed_activity_date__c",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "Shipping_State__c",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "TAG_Employer_Region__c",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "Likelyhoodtoacceptcontact_bucket",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "ShippingPostalCode",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "LastActivityDate",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "NumberOfEmployees",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "INT_PotentialMandays__c",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
-      "fieldName" : "Likelyhoodtoacceptcontact",
-      "objectType" : "analyticsDataset",
-      "objectName" : "Kontoer_marked"
-    }, {
       "fieldName" : "Id",
       "objectType" : "connectedDataset",
       "objectName" : "SFDC_LOCAL$Task"

@@ -72,7 +72,7 @@
     },
     "OUTPUT1" : {
       "action" : "save",
-      "sources" : [ "JOIN2" ],
+      "sources" : [ "JOIN4" ],
       "parameters" : {
         "fields" : [ ],
         "dataset" : {
@@ -259,9 +259,29 @@
         } ]
       }
     },
+    "FORMULA4" : {
+      "action" : "computeRelative",
+      "sources" : [ "FORMULA3" ],
+      "parameters" : {
+        "partitionBy" : [ "Account.Id" ],
+        "orderBy" : [ {
+          "fieldName" : "DateFrom__c",
+          "direction" : "DESC"
+        } ],
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Sistearenaaktivitetstype",
+          "label" : "Siste arenaaktivitets type",
+          "formulaExpression" : "first_value(Aktivitetstype__c)",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
     "JOIN1" : {
       "action" : "join",
-      "sources" : [ "FORMULA3", "AGGREGATE1" ],
+      "sources" : [ "FORMULA4", "AGGREGATE1" ],
       "schema" : {
         "fields" : [ ],
         "slice" : {
@@ -275,24 +295,6 @@
         "leftKeys" : [ "Account.Id" ],
         "rightQualifier" : "Aggregater",
         "rightKeys" : [ "Account.Id" ]
-      }
-    },
-    "JOIN2" : {
-      "action" : "join",
-      "sources" : [ "JOIN1", "BUCKET1" ],
-      "schema" : {
-        "fields" : [ ],
-        "slice" : {
-          "mode" : "DROP",
-          "ignoreMissingFields" : true,
-          "fields" : [ ]
-        }
-      },
-      "parameters" : {
-        "joinType" : "LOOKUP",
-        "leftKeys" : [ "Account.Id" ],
-        "rightQualifier" : "scoring",
-        "rightKeys" : [ "Id" ]
       }
     },
     "BUCKET1" : {
@@ -324,25 +326,121 @@
         } ]
       }
     },
-    "EXTRACT1" : {
-      "action" : "extractGrains",
-      "sources" : [ "JOIN2" ],
+    "JOIN3" : {
+      "action" : "join",
+      "sources" : [ "BUCKET1", "AGGREGATE1" ],
+      "schema" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
       "parameters" : {
-        "grainExtractions" : [ ]
+        "joinType" : "LOOKUP",
+        "leftKeys" : [ "Id" ],
+        "rightQualifier" : "ArenaAct",
+        "rightKeys" : [ "Account.Id" ]
       }
     },
-    "AGGREGATE3" : {
-      "action" : "aggregate",
-      "sources" : [ "EXTRACT1" ],
+    "JOIN4" : {
+      "action" : "join",
+      "sources" : [ "JOIN1", "BUCKET1" ],
+      "schema" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
       "parameters" : {
-        "aggregations" : [ {
-          "action" : "UNIQUE",
-          "source" : "Id",
-          "name" : "AntallArenaAktiviteter",
-          "label" : "Antall arena aktiviteter"
-        } ],
-        "groupings" : [ "Account.Id" ],
-        "nodeType" : "STANDARD"
+        "joinType" : "LOOKUP",
+        "leftKeys" : [ "Account.Id" ],
+        "rightQualifier" : "Accountscores",
+        "rightKeys" : [ "Id" ]
+      }
+    },
+    "DROP_FIELDS1" : {
+      "action" : "schema",
+      "sources" : [ "JOIN5" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "ArenaAct.Account.Id", "ShippingCity", "ShippingState", "INT_SectorCode__c", "IsPersonAccount", "CRM_AccountType__c", "AccountSource", "INT_IndustryCode__c", "CRM_RegistrationYear__c", "LastArenaA.Account.Id" ]
+        }
+      }
+    },
+    "EDIT_ATTRIBUTES2" : {
+      "action" : "schema",
+      "sources" : [ "DROP_FIELDS1" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "ArenaAct.UNIQUE_Id",
+          "newProperties" : {
+            "label" : "Antall arena aktiviteter",
+            "name" : "ArenaAct.UNIQUE_Id"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES3" : {
+      "action" : "schema",
+      "sources" : [ "EDIT_ATTRIBUTES2" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "MAR_NAVUnitText__c",
+          "newProperties" : {
+            "label" : "NAV enhet",
+            "name" : "MAR_NAVUnitText__c"
+          }
+        } ]
+      }
+    },
+    "OUTPUT2" : {
+      "action" : "save",
+      "sources" : [ "EDIT_ATTRIBUTES3" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Kontoer med aggregert arenaakt",
+          "name" : "AccountAggArenaAct",
+          "folderName" : "Markedsavdelingen_v1"
+        }
+      }
+    },
+    "JOIN5" : {
+      "action" : "join",
+      "sources" : [ "JOIN3", "DROP_FIELDS2" ],
+      "schema" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "LOOKUP",
+        "leftKeys" : [ "Id" ],
+        "rightQualifier" : "LastArenaA",
+        "rightKeys" : [ "Account.Id" ]
+      }
+    },
+    "DROP_FIELDS2" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA4" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "SELECT",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Account.Id", "LastArenaActDate__c", "Sistearenaaktivitetstype" ]
+        }
       }
     }
   },
@@ -352,7 +450,7 @@
         "label" : "Account",
         "description" : "",
         "type" : "LOAD_DATASET",
-        "top" : 250.2,
+        "top" : 112,
         "left" : 112,
         "parameters" : {
           "sampleSize" : 2000
@@ -362,20 +460,20 @@
         "label" : "Remove person accounts",
         "description" : "Removes all person accounts",
         "type" : "FILTER",
-        "top" : 250.2,
+        "top" : 112,
         "left" : 252
       },
       "OUTPUT0" : {
         "label" : "Create \"Kontoer\"",
         "description" : "Creates the datasource: \"Kontoer\".",
         "type" : "OUTPUT",
-        "top" : 530.2,
-        "left" : 812
+        "top" : 532,
+        "left" : 1232
       },
       "LOAD_DATASET1" : {
         "label" : "ArenaActivity__c",
         "type" : "LOAD_DATASET",
-        "top" : 390.2,
+        "top" : 252,
         "left" : 252,
         "parameters" : {
           "sampleSize" : 2000
@@ -385,22 +483,22 @@
         "label" : "Join-account&arenaact",
         "description" : "",
         "type" : "JOIN",
-        "top" : 250.2,
+        "top" : 112,
         "left" : 392
       },
       "OUTPUT1" : {
         "label" : "Create-Accounts.and.ArenaAct",
         "description" : "",
         "type" : "OUTPUT",
-        "top" : 250.2,
+        "top" : 252,
         "left" : 1372
       },
       "TRANSFORM0" : {
         "label" : "add.scoring",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 390.2,
-        "left" : 392,
+        "top" : 392,
+        "left" : 952,
         "graph" : {
           "FORMULA0" : {
             "parameters" : {
@@ -441,8 +539,8 @@
         "label" : "rename.collumn",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 250.2,
-        "left" : 812,
+        "top" : 112,
+        "left" : 672,
         "graph" : {
           "EDIT_ATTRIBUTES1" : null
         },
@@ -452,8 +550,8 @@
         "label" : "drop.collumns",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 390.2,
-        "left" : 672,
+        "top" : 532,
+        "left" : 1092,
         "graph" : {
           "DROP_FIELDS0" : null,
           "BUCKET0" : null
@@ -467,7 +565,7 @@
         "label" : "Aggregate.rows",
         "description" : "",
         "type" : "AGGREGATE",
-        "top" : 390.2,
+        "top" : 112,
         "left" : 952,
         "graph" : {
           "EXTRACT0" : null,
@@ -482,59 +580,99 @@
         "label" : "Filterer.Arenaaktivitiet",
         "description" : "",
         "type" : "FILTER",
-        "top" : 390.2,
+        "top" : 112,
         "left" : 812
       },
       "TRANSFORM4" : {
         "label" : "LastArenaActivityDate",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 250.2,
-        "left" : 952,
+        "top" : 672,
+        "left" : 812,
         "graph" : {
-          "FORMULA3" : null
+          "FORMULA3" : null,
+          "FORMULA4" : null
         },
-        "connectors" : [ ]
+        "connectors" : [ {
+          "source" : "FORMULA3",
+          "target" : "FORMULA4"
+        } ]
       },
       "JOIN1" : {
         "label" : "JoinAggregates",
         "description" : "",
         "type" : "JOIN",
-        "top" : 250.2,
+        "top" : 252,
         "left" : 1092
-      },
-      "JOIN2" : {
-        "label" : "JoinScoring",
-        "description" : "",
-        "type" : "JOIN",
-        "top" : 250.2,
-        "left" : 1232
       },
       "TRANSFORM5" : {
         "label" : "bucketscores",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 250.2,
-        "left" : 532,
+        "top" : 392,
+        "left" : 1092,
         "graph" : {
           "BUCKET1" : null
         },
         "connectors" : [ ]
       },
-      "AGGREGATE2" : {
-        "label" : "Aggregate.to.account",
+      "JOIN3" : {
+        "label" : "JoinAreanadata.Account",
         "description" : "",
-        "type" : "AGGREGATE",
-        "top" : 392.4,
+        "type" : "JOIN",
+        "top" : 112,
+        "left" : 1092
+      },
+      "JOIN4" : {
+        "label" : "JoinScores",
+        "description" : "",
+        "type" : "JOIN",
+        "top" : 252,
+        "left" : 1232
+      },
+      "TRANSFORM6" : {
+        "label" : "rename.drop",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 112,
         "left" : 1372,
         "graph" : {
-          "EXTRACT1" : null,
-          "AGGREGATE3" : null
+          "DROP_FIELDS1" : null,
+          "EDIT_ATTRIBUTES2" : null,
+          "EDIT_ATTRIBUTES3" : null
         },
         "connectors" : [ {
-          "source" : "EXTRACT1",
-          "target" : "AGGREGATE3"
+          "source" : "DROP_FIELDS1",
+          "target" : "EDIT_ATTRIBUTES2"
+        }, {
+          "source" : "EDIT_ATTRIBUTES2",
+          "target" : "EDIT_ATTRIBUTES3"
         } ]
+      },
+      "OUTPUT2" : {
+        "label" : "AccountAggArenaAct",
+        "description" : "",
+        "type" : "OUTPUT",
+        "top" : 112,
+        "left" : 1512
+      },
+      "JOIN5" : {
+        "label" : "JoinArenaActdata",
+        "description" : "",
+        "type" : "JOIN",
+        "top" : 112,
+        "left" : 1232
+      },
+      "TRANSFORM7" : {
+        "label" : "drop.data",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 672,
+        "left" : 952,
+        "graph" : {
+          "DROP_FIELDS2" : null
+        },
+        "connectors" : [ ]
       }
     },
     "connectors" : [ {
@@ -546,9 +684,6 @@
     }, {
       "source" : "FILTER0",
       "target" : "JOIN0"
-    }, {
-      "source" : "JOIN2",
-      "target" : "OUTPUT1"
     }, {
       "source" : "FILTER0",
       "target" : "TRANSFORM0"
@@ -580,27 +715,40 @@
       "source" : "AGGREGATE0",
       "target" : "JOIN1"
     }, {
-      "source" : "JOIN1",
-      "target" : "JOIN2"
-    }, {
-      "source" : "TRANSFORM5",
-      "target" : "JOIN2"
-    }, {
       "source" : "TRANSFORM0",
       "target" : "TRANSFORM5"
     }, {
-      "source" : "JOIN2",
-      "target" : "AGGREGATE2"
+      "source" : "TRANSFORM5",
+      "target" : "JOIN3"
+    }, {
+      "source" : "AGGREGATE0",
+      "target" : "JOIN3"
+    }, {
+      "source" : "JOIN1",
+      "target" : "JOIN4"
+    }, {
+      "source" : "TRANSFORM5",
+      "target" : "JOIN4"
+    }, {
+      "source" : "JOIN4",
+      "target" : "OUTPUT1"
+    }, {
+      "source" : "JOIN5",
+      "target" : "TRANSFORM6"
+    }, {
+      "source" : "TRANSFORM6",
+      "target" : "OUTPUT2"
+    }, {
+      "source" : "JOIN3",
+      "target" : "JOIN5"
+    }, {
+      "source" : "TRANSFORM7",
+      "target" : "JOIN5"
+    }, {
+      "source" : "TRANSFORM4",
+      "target" : "TRANSFORM7"
     } ],
     "hiddenColumns" : [ {
-      "fieldName" : "AccountSource",
-      "objectType" : "connectedDataset",
-      "objectName" : "SFDC_LOCAL$Account"
-    }, {
-      "fieldName" : "INT_SectorCode__c",
-      "objectType" : "connectedDataset",
-      "objectName" : "SFDC_LOCAL$Account"
-    }, {
       "fieldName" : "SourceFormula__pc",
       "objectType" : "connectedDataset",
       "objectName" : "SFDC_LOCAL$Account"
