@@ -323,6 +323,27 @@
           }
         } ]
       }
+    },
+    "EXTRACT1" : {
+      "action" : "extractGrains",
+      "sources" : [ "JOIN2" ],
+      "parameters" : {
+        "grainExtractions" : [ ]
+      }
+    },
+    "AGGREGATE3" : {
+      "action" : "aggregate",
+      "sources" : [ "EXTRACT1" ],
+      "parameters" : {
+        "aggregations" : [ {
+          "action" : "UNIQUE",
+          "source" : "Id",
+          "name" : "AntallArenaAktiviteter",
+          "label" : "Antall arena aktiviteter"
+        } ],
+        "groupings" : [ "Account.Id" ],
+        "nodeType" : "STANDARD"
+      }
     }
   },
   "ui" : {
@@ -499,6 +520,21 @@
           "BUCKET1" : null
         },
         "connectors" : [ ]
+      },
+      "AGGREGATE2" : {
+        "label" : "Aggregate.to.account",
+        "description" : "",
+        "type" : "AGGREGATE",
+        "top" : 392.4,
+        "left" : 1372,
+        "graph" : {
+          "EXTRACT1" : null,
+          "AGGREGATE3" : null
+        },
+        "connectors" : [ {
+          "source" : "EXTRACT1",
+          "target" : "AGGREGATE3"
+        } ]
       }
     },
     "connectors" : [ {
@@ -552,6 +588,9 @@
     }, {
       "source" : "TRANSFORM0",
       "target" : "TRANSFORM5"
+    }, {
+      "source" : "JOIN2",
+      "target" : "AGGREGATE2"
     } ],
     "hiddenColumns" : [ {
       "fieldName" : "AccountSource",
