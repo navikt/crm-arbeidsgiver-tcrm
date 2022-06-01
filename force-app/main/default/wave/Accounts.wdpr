@@ -26,19 +26,6 @@
         } ]
       }
     },
-    "OUTPUT0" : {
-      "action" : "save",
-      "sources" : [ "BUCKET0" ],
-      "parameters" : {
-        "fields" : [ ],
-        "dataset" : {
-          "type" : "analyticsDataset",
-          "label" : "Kontoer_marked",
-          "name" : "Kontoer_marked",
-          "folderName" : "Markedsavdelingen_v1"
-        }
-      }
-    },
     "LOAD_DATASET1" : {
       "action" : "load",
       "sources" : [ ],
@@ -151,51 +138,6 @@
           "newProperties" : {
             "label" : "Industri.group",
             "name" : "Account.INT_IndustryCode__c_formula"
-          }
-        } ]
-      }
-    },
-    "DROP_FIELDS0" : {
-      "action" : "schema",
-      "sources" : [ "FORMULA2" ],
-      "parameters" : {
-        "fields" : [ ],
-        "slice" : {
-          "mode" : "SELECT",
-          "ignoreMissingFields" : true,
-          "fields" : [ "Id", "Name", "LastName", "FirstName", "Type", "ShippingStreet", "ShippingCity", "ShippingState", "ShippingPostalCode", "Industry", "NumberOfEmployees", "Description", "OwnerId", "CreatedDate", "LastActivityDate", "LastViewedDate", "LastReferencedDate", "IsPersonAccount", "CRM_AccountType__c", "CRM_MainIndustry__c", "CRM_RegistrationYear__c", "INT_IndustryCode__c", "INT_Industry__c", "INT_MunicipalityNumber__c", "INT_OrganizationNumber__c", "INT_OrganizationalStructureDesc__c", "INT_PotentialMandays__c", "INT_RegDateEreg__c", "INT_RegionNumber__c", "OrganizationNumberFormula__c", "NAV_Market_Region__c", "NAV_Region__c", "Shipping_State__c", "TAG_Employer_Region__c", "TAG_Last_completed_activity_date__c", "TAG_Main_Industry__c", "CRM_Region__pc", "CRM_Unit__pc", "Likelyhoodtoacceptcontact", "MAR_NAVUnitText__c" ]
-        }
-      }
-    },
-    "BUCKET0" : {
-      "action" : "bucket",
-      "sources" : [ "DROP_FIELDS0" ],
-      "parameters" : {
-        "fields" : [ {
-          "name" : "Likelyhoodtoacceptcontact_bucket",
-          "label" : "Sannsynlighet for tiltak gruppert",
-          "type" : "TEXT",
-          "bucketsSetup" : {
-            "isPassthroughEnabled" : false,
-            "sourceField" : {
-              "name" : "Likelyhoodtoacceptcontact",
-              "type" : "NUMBER"
-            },
-            "buckets" : [ {
-              "value" : "Low",
-              "rangeEnd" : 0.3
-            }, {
-              "value" : "Medium",
-              "rangeStart" : 0.3,
-              "rangeEnd" : 0.5
-            }, {
-              "value" : "High",
-              "rangeStart" : 0.5,
-              "rangeEnd" : 0.7
-            }, {
-              "value" : "Hot",
-              "rangeStart" : 0.7
-            } ]
           }
         } ]
       }
@@ -463,13 +405,6 @@
         "top" : 112,
         "left" : 252
       },
-      "OUTPUT0" : {
-        "label" : "Create \"Kontoer\"",
-        "description" : "Creates the datasource: \"Kontoer\".",
-        "type" : "OUTPUT",
-        "top" : 532,
-        "left" : 1232
-      },
       "LOAD_DATASET1" : {
         "label" : "ArenaActivity__c",
         "type" : "LOAD_DATASET",
@@ -546,21 +481,6 @@
         },
         "connectors" : [ ]
       },
-      "TRANSFORM3" : {
-        "label" : "drop.collumns",
-        "description" : "",
-        "type" : "TRANSFORM",
-        "top" : 532,
-        "left" : 1092,
-        "graph" : {
-          "DROP_FIELDS0" : null,
-          "BUCKET0" : null
-        },
-        "connectors" : [ {
-          "source" : "DROP_FIELDS0",
-          "target" : "BUCKET0"
-        } ]
-      },
       "AGGREGATE0" : {
         "label" : "Aggregate.rows",
         "description" : "",
@@ -587,7 +507,7 @@
         "label" : "LastArenaActivityDate",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 672,
+        "top" : 532,
         "left" : 812,
         "graph" : {
           "FORMULA3" : null,
@@ -667,7 +587,7 @@
         "label" : "drop.data",
         "description" : "",
         "type" : "TRANSFORM",
-        "top" : 672,
+        "top" : 532,
         "left" : 952,
         "graph" : {
           "DROP_FIELDS2" : null
@@ -691,14 +611,8 @@
       "source" : "JOIN0",
       "target" : "TRANSFORM1"
     }, {
-      "source" : "TRANSFORM3",
-      "target" : "OUTPUT0"
-    }, {
       "source" : "FILTER1",
       "target" : "AGGREGATE0"
-    }, {
-      "source" : "TRANSFORM0",
-      "target" : "TRANSFORM3"
     }, {
       "source" : "TRANSFORM1",
       "target" : "TRANSFORM2"
