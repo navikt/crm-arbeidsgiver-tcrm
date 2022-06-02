@@ -289,6 +289,7 @@
       "action" : "join",
       "sources" : [ "FORMULA2", "FORMULA3" ],
       "schema" : {
+        "fields" : [ ],
         "slice" : {
           "mode" : "DROP",
           "ignoreMissingFields" : true,
@@ -304,7 +305,7 @@
     },
     "FILTER1" : {
       "action" : "filter",
-      "sources" : [ "JOIN3" ],
+      "sources" : [ "FORMULA7" ],
       "parameters" : {
         "filterExpressions" : [ {
           "type" : "TEXT",
@@ -318,6 +319,70 @@
           "operands" : [ "Rekruttere og inkludere" ]
         } ],
         "filterBooleanLogic" : "1 AND 2"
+      }
+    },
+    "FORMULA4" : {
+      "action" : "formula",
+      "sources" : [ "JOIN3" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "LastActivityScoring",
+          "label" : "Last activity Scoring",
+          "formulaExpression" : "case \"Activity.LastActivityType\"\n\twhen 'Forebygge sykefravær og redusere frafall'\n\tthen 0.2\n\twhen 'Nedbemanne'\n    then -0.1\n    when 'Rekruttere og inkludere'\n    then 0.5\n\telse\n\t0\nend",
+          "precision" : 10,
+          "scale" : 4,
+          "defaultValue" : "0"
+        } ]
+      }
+    },
+    "FORMULA5" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA4" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "scoringLastActivityType",
+          "label" : "scoring Last activity type",
+          "formulaExpression" : "case \"Activity.LastActivityoverallType\"\n\twhen 'Meeting'\n\tthen 0.6\n\twhen 'Call'\n    then 0.1\n    when 'Email'\n    then 0.1\n\telse\n\t0\nend",
+          "precision" : 10,
+          "scale" : 4,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA6" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA5" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "scoringAntallArenaAkt",
+          "label" : "scoringAntallArenaAkt",
+          "formulaExpression" : "case\n\twhen  \"ArenaAct.UNIQUE_Id\" > 3\n\tthen 0.8\n    when \"ArenaAct.UNIQUE_Id\" >= 1\n\tthen 0.5\n\telse\n\t0\nend",
+          "precision" : 10,
+          "scale" : 4,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA7" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA6" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "cummulativescoringPossibilityforArenaAct",
+          "label" : "Vektet sannsynlighet for positivitet til tiltak ved kontakt",
+          "formulaExpression" : "(\"scoringLastActivityType\" * 0.25) +\n(\"scoringAntallArenaAkt\" * 0.25) +\n(\"LastActivityScoring\" * 0.25) +\n(\"Likelyhoodtoacceptcontact\" * 0.25)",
+          "precision" : 10,
+          "scale" : 4,
+          "defaultValue" : ""
+        } ]
       }
     }
   },
@@ -368,7 +433,7 @@
         "label" : "Create.Kontoer.Oppgaver.Møter",
         "description" : "",
         "type" : "OUTPUT",
-        "top" : 392,
+        "top" : 532,
         "left" : 672
       },
       "TRANSFORM0" : {
@@ -406,14 +471,14 @@
         "description" : "",
         "type" : "JOIN",
         "top" : 112,
-        "left" : 812
+        "left" : 953.6
       },
       "OUTPUT1" : {
         "label" : "Create.Kontoer.Oppgaver.Møter.Aggregert",
         "description" : "",
         "type" : "OUTPUT",
         "top" : 112,
-        "left" : 952
+        "left" : 1093.6
       },
       "LOAD_DATASET4" : {
         "label" : "Kontoer med aggregert arenaakt",
@@ -459,7 +524,7 @@
         "description" : "",
         "type" : "OUTPUT",
         "top" : 252,
-        "left" : 812
+        "left" : 952
       },
       "JOIN3" : {
         "label" : "JoinActivity.Accounts",
@@ -473,7 +538,53 @@
         "description" : "",
         "type" : "FILTER",
         "top" : 252,
-        "left" : 672
+        "left" : 812
+      },
+      "TRANSFORM3" : {
+        "label" : "advancedscoring1",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 252,
+        "left" : 672,
+        "graph" : {
+          "FORMULA4" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA5" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA6" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA4",
+          "target" : "FORMULA5"
+        }, {
+          "source" : "FORMULA5",
+          "target" : "FORMULA6"
+        } ]
+      },
+      "TRANSFORM4" : {
+        "label" : "addscoring2",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 392,
+        "left" : 672,
+        "graph" : {
+          "FORMULA7" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          }
+        },
+        "connectors" : [ ]
       }
     },
     "connectors" : [ {
@@ -519,11 +630,17 @@
       "source" : "TRANSFORM1",
       "target" : "JOIN3"
     }, {
-      "source" : "JOIN3",
+      "source" : "TRANSFORM4",
       "target" : "FILTER1"
     }, {
       "source" : "FILTER1",
       "target" : "OUTPUT2"
+    }, {
+      "source" : "JOIN3",
+      "target" : "TRANSFORM3"
+    }, {
+      "source" : "TRANSFORM3",
+      "target" : "TRANSFORM4"
     } ],
     "hiddenColumns" : [ {
       "fieldName" : "Id",
