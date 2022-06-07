@@ -9,6 +9,12 @@ Prosjektet skal bygge ut Tabelau CRM for å gjlre makredsavdeling i NAV mer data
 
 Hvordan bygge, teste og kjøre koden viss aktuelt.
 
+Når ny scratch org settes opp: 
+
+- Etter source:push husk å assigne «Analytics Integration» permission set til «Integration User» for å sikre lese rettigheter på alle relevante felt. 
+- For at dashboards skal funke må alle relevante recipies kjøres. 
+
+
 ---
 
 ## Dependencies
