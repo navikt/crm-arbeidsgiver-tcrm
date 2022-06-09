@@ -14,7 +14,12 @@ Når ny scratch org settes opp:
 - Etter source:push husk å assigne «Analytics Integration» permission set til «Integration User» for å sikre lese rettigheter på alle relevante felt. 
 - For at dashboards skal funke må alle relevante recipies kjøres. 
 
+VIktige punkter for å kjøre deploy mot nye sandbox/prod miljøer:
 
+- Deployment user need Tableau CRM permissions set.
+- Analytics app: shared with users need to exist in target org. 
+- Double check which apps datasets are assigned to
+- If you get this error while deploying: «Missing dataflow». Run this command towards your scratch      org:    sfdx force:source:retrieve -m WaveDataFlow:[NAME OF YOUR RECIPE]And then deploy again. 
 ---
 
 ## Dependencies
