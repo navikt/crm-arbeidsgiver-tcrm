@@ -1,5 +1,5 @@
 {
-  "version" : "54.0",
+  "version" : "55.0",
   "nodes" : {
     "LOAD_DATASET1" : {
       "action" : "load",
@@ -11,6 +11,10 @@
           "label" : "Task",
           "connectionName" : "SFDC_LOCAL",
           "sourceObjectName" : "Task"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
         }
       }
     },
@@ -23,6 +27,10 @@
           "type" : "analyticsDataset",
           "label" : "Kontoer med aggregert arenaakt",
           "name" : "AccountAggArenaAct"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
         }
       }
     },
@@ -54,6 +62,10 @@
           "label" : "Event",
           "connectionName" : "SFDC_LOCAL",
           "sourceObjectName" : "Event"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
         }
       }
     },
@@ -214,6 +226,10 @@
           "type" : "analyticsDataset",
           "label" : "Kontoer med aggregert arenaakt",
           "name" : "AccountAggArenaAct"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
         }
       }
     },
