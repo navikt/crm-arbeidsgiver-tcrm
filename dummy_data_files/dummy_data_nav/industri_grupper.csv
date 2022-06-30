@@ -1,0 +1,88 @@
+﻿code;parentCode;shortName
+01;A;Jordbruk, tilhør. tjenester, jakt
+02;A;Skogbruk og tilhørende tjenester
+03;A;Fiske, fangst og akvakultur
+05;B;Bryting av steinkull og brunkull
+06;B;Utvinning av råolje og naturgass
+07;B;Bryting av metallholdig malm
+08;B;Bryting og bergverksdrift ellers
+09;B;Tjenester til bergverk og utvinning
+10;C;Næringsmiddelindustri
+11;C;Drikkevareindustri
+12;C;Tobakksindustri
+13;C;Tekstilindustri
+14;C;Bekledningsindustri
+15;C;Lær- og lærvareindustri
+16;C;Trelast- og trevareindustri
+17;C;Papir- og papirvareindustri
+18;C;Trykking, grafisk industri
+19;C;Petroleums- og kullvareindustri
+20;C;Kjemisk industri
+21;C;Farmasøytisk industri
+22;C;Gummivare- og plastindustri
+23;C;Mineralproduktindustri
+24;C;Metallindustri
+25;C;Metallvareindustri
+26;C;Data- og elektronisk industri
+27;C;Elektroteknisk industri
+28;C;Maskinindustri
+29;C;Motorkjøretøyindustri
+30;C;Transportmiddelindustri ellers
+31;C;Møbelindustri
+32;C;Annen industri
+33;C;Maskinreparasjon og -installasjon
+35;D;Kraftforsyning
+36;E;Vannforsyning
+37;E;Håndtering av avløpsvann
+38;E;Avfallshåndtering
+39;E;Miljørydding og miljørensing
+41;F;Oppføring av bygninger
+42;F;Anleggsvirksomhet
+43;F;Spes. bygge- og anleggsvirksomhet
+45;G;Kjøretøyreparasjoner og -handel
+46;G;Agentur- og engroshandel
+47;G;Detaljhandel, unntatt motorvogner
+49;H;Landtransport og rørtransport
+50;H;Sjøfart
+51;H;Lufttransport
+52;H;Transporttjenester og lagring
+53;H;Post og distribusjonsvirksomhet
+55;I;Overnattingsvirksomhet
+56;I;Serveringsvirksomhet
+58;J;Forlagsvirksomhet
+59;J;Film- og TV-prod., musikkutgivelse
+60;J;Radio- og fjernsynskringkasting
+61;J;Telekommunikasjon
+62;J;IT-tjenester
+63;J;Informasjonstjenester
+64;K;Finansieringsvirksomhet
+65;K;Forsikring og pensjonskasser
+66;K;Finans-, forsikringshjelpetjenester
+68;L;Omsetning og drift av fast eiendom
+69;M;Juridisk og regnsk.messig tj.yting
+70;M;Hovedkontortjen. og adm. rådgivning
+71;M;Arkitekter og tekniske konsulenter
+72;M;Forskning og utviklingsarbeid
+73;M;Reklamevirksomhet og markedsund.
+74;M;Fagl., vit. og tekn. virks. ellers
+75;M;Veterinærtjenester
+77;N;Utleie- og leasingvirksomhet
+78;N;Arbeidskrafttjenester
+79;N;Reisebyråer og reisearrangører
+80;N;Vakttjeneste og etterforsking
+81;N;Tjenester tilknyttet eiendomsdrift
+82;N;Forretningsm. tjenesteyt. ellers
+84;O;Off.adm., forsvar, sosialforsikring
+85;P;Undervisning
+86;Q;Helsetjenester
+87;Q;Pleie og omsorg i institusjon
+88;Q;Omsorg uten botilbud, barnehager mv.
+90;R;Kunstnerisk virks. og underholdning
+91;R;Bibliotek, muséer o.a. kulturvirks.
+92;R;Lotteri og totalisatorspill
+93;R;Sports- og fritidsaktiviteter
+94;S;Aktiviteter i medlemsorgansiasjoner
+95;S;Reparasjon av varer til pers. bruk
+96;S;Annen personlig tjenesteyting
+97;T;Lønnet arbeid i private husholdn.
+99;U;Internasjonale organer
